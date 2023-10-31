@@ -1,24 +1,40 @@
 import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const UseGetDoccument = (queryParams) => {
   const [doccument, setDoccument] = useState([]);
-  console.log("got here");
+  const { currentUser, currentChatRecipient } = useSelector(
+    (state) => state.app
+  );
+
   useEffect(() => {
     try {
-      onSnapshot(queryParams, (snapshot) => {
-        console.log(snapshot, "snapshot");
-        let messages = [];
-        snapshot.forEach((doc) => {
-          messages.push({ ...doc.data(), id: doc.id });
+      const getSnapShot = async () => {
+        onSnapshot(queryParams, (snapshot) => {
+          console.log(snapshot, "snapshot");
+          let messages = [];
+          snapshot.forEach((doc) => {
+            messages.push({ ...doc.data(), id: doc.id });
+          });
+          setDoccument(messages);
+          console.log(
+            "NEW DOCCUMENT SENT",
+            "messages",
+            messages[messages.length - 1].email,
+            currentChatRecipient,
+            currentUser.user.email
+          );
+          currentUser.user.email !== messages[messages.length - 1].email &&
+            messages[messages.length - 1].email &&
+            alert(`New Message from ${messages[messages.length - 1].email}`);
         });
-        setDoccument(messages);
-        console.log("NEW MESSAGE SENT");
-      });
+      };
+      getSnapShot();
     } catch (error) {
       console.error(error);
     }
-  }, [queryParams]);
+  }, [currentChatRecipient, currentUser, queryParams]);
 
   return [doccument];
 };

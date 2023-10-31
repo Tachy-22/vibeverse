@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { addDoc, collection, query } from "firebase/firestore";
-import { auth, db } from "../../../firebase-config";
+import {  db } from "../../../firebase-config";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import UseGetDoccument from "../../controls/hooks/useGetDoccument.js";
 import { isRoomExisting } from "../../controls/functions/isRoomExisting";
@@ -11,7 +11,7 @@ import { addNewRoom, updateRooms } from "../../../redux/slice";
 import { useNavigate } from "react-router-dom";
 
 const AddRoom = ({ handleMenuClose }) => {
-  const { room, rooms } = useSelector((state) => state.app);
+  const { room, rooms, currentUser } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,6 +19,7 @@ const AddRoom = ({ handleMenuClose }) => {
   const queryParams = useMemo(() => query(doccumentRef), [doccumentRef]);
 
   const roomRef = useRef(null);
+  const roomInputValue = roomRef.current?.value;
 
   const [doccument] = UseGetDoccument(queryParams);
 
@@ -26,42 +27,63 @@ const AddRoom = ({ handleMenuClose }) => {
     return doccument.map((obj) => obj.name?.trim().toLowerCase());
   }, [doccument]);
 
-  const updateRoomsCondition = room !== "" && !isRoomExisting(room, roomNames);
-  const previousRoom = useMemo(
-    () => (room === "" ? localStorage.getItem("current room") : room),
-    [room]
-  );
+  const updateRoomsCondition =
+    roomInputValue !== null &&
+    roomInputValue !== "" &&
+    !isRoomExisting(roomInputValue, roomNames);
+
+  const previousRoom = useMemo(() => localStorage.getItem("current room"), []);
 
   useEffect(() => {
-    if (room !== "") {
+    if (roomInputValue !== "" && roomInputValue) {
       console.log("setting new room");
-      localStorage.setItem("current room", room);
+      localStorage.setItem("current room", roomInputValue);
     }
-    if (room === "") {
-      dispatch(addNewRoom(previousRoom));
+    if (roomInputValue === "") {
+      previousRoom !== null && dispatch(addNewRoom(previousRoom));
     }
-  }, [dispatch, previousRoom, room]);
+  }, [dispatch, previousRoom, room, roomInputValue]);
+
+  useEffect(() => {
+    dispatch(addNewRoom(roomInputValue));
+  }, [dispatch, roomInputValue]);
 
   useEffect(() => {
     dispatch(updateRooms(doccument));
   }, [dispatch, doccument]);
 
-  const handleMessageSending = useCallback(
+  const handleRoomNavigation = useCallback(
     async (e) => {
       e.preventDefault();
 
-      dispatch(addNewRoom(roomRef.current.value));
-      console.log("NEW ROOM NAVIGATED TO", ", previousRoom", room);
-      navigate(`/group/${room}`);
+      //  dispatch(addNewRoom(roomRef?.current?.value));
+
       try {
-        if (updateRoomsCondition) {
+        //  dispatch(addNewRoom(roomInputValue));
+        console.log("NEW ROOM NAVIGATED TO", "previousRoom", room);
+        navigate(`/group/${room}`);
+        console.log(
+          "updateRoomsCondition",
+          updateRoomsCondition,
+          roomInputValue !== "",
+          roomNames,
+          "  isRoomExisting(roomInputValue, roomNames),",
+          !isRoomExisting(roomInputValue, roomNames),
+          " roomInputValue & !isRoomExisting(roomInputValue, roomNames)",
+          roomInputValue !== "" && !isRoomExisting(roomInputValue, roomNames),
+          currentUser.user
+        );
+        if (
+          roomInputValue !== "" &&
+          !isRoomExisting(roomInputValue, roomNames)
+        ) {
           const messageObj = {
             name: room,
-            createdBy: auth.currentUser.displayName,
+            createdBy: currentUser.user?.displayName,
           };
           await addDoc(doccumentRef, messageObj);
-          // console.log(room, auth.currentUser);
-
+          // console.log(room, currentUser.user);
+          dispatch(updateRooms(doccument));
           console.log("NEW ROOM ADDED", ", previousRoom", previousRoom);
         } else {
           return;
@@ -70,7 +92,18 @@ const AddRoom = ({ handleMenuClose }) => {
         console.error(error);
       }
     },
-    [dispatch, room, navigate, updateRoomsCondition, doccumentRef, previousRoom]
+    [
+      room,
+      navigate,
+      updateRoomsCondition,
+      roomInputValue,
+      roomNames,
+      currentUser.user,
+      doccumentRef,
+      dispatch,
+      doccument,
+      previousRoom,
+    ]
   );
   console.log(
     "rooms",
@@ -88,12 +121,12 @@ const AddRoom = ({ handleMenuClose }) => {
     }
     handleMenuClose();
   };
-
+  console.log("room input:", roomInputValue);
   return (
     <form
       action=""
       className=" w-full bg-orange-100/40 backdrop-blur-md h-[10rem] p-1 text-black"
-      onSubmit={handleMessageSending}
+      onSubmit={handleRoomNavigation}
     >
       <input ref={roomRef} type="text" className=" border" />
 

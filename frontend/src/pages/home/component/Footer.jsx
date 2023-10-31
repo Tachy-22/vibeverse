@@ -1,4 +1,4 @@
-import OnlineNotif from "../../../components/OnlineNotif";
+//import OnlineNotif from "../../../components/OnlineNotif";
 
 const Footer = () => {
   return (
@@ -6,7 +6,7 @@ const Footer = () => {
       {" "}
       <footer className="flex justify-between px-4  pt-2 items-center text-white">
         <div className="">
-          <OnlineNotif />{" "}
+          {/* <OnlineNotif />{" "} */}
         </div>{" "}
         <button className="button">
           <span className="button-content">Sign out </span>{" "}

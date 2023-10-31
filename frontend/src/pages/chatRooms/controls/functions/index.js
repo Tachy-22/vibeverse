@@ -12,3 +12,10 @@ export function formatTimestamp(timestamp) {
     console.error(error);
   }
 }
+export const clearLocaltorage = () => {
+  localStorage.removeItem("recent chat");
+  localStorage.removeItem("recent user");
+  localStorage.removeItem("current room");
+  localStorage.removeItem("recent chat recipient");
+  localStorage.removeItem("current chat");
+};

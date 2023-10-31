@@ -3,22 +3,56 @@ import LogoDeskop from "../../components/Logo";
 import signInWithGoogle from "./controls/functions/SignInWithGoogle";
 import { FaGoogle } from "react-icons/fa";
 import HomeBg from "../../assets/homeBg3.jpg";
-import { initiateCurrentUser } from "../../redux/slice";
+import { initiateCurrentUser, updateUsers } from "../../redux/slice";
 import { useDispatch } from "react-redux";
 
-const SignIn = ({ setIsAuth }) => {
+import { useEffect, useMemo } from "react";
+import { collection, query } from "firebase/firestore";
+import { db } from "../../firebase-config";
+import UseGetDoccument from "../controls/hooks/useGetDoccument.js";
+import { useNavigate } from "react-router-dom";
+import { cookies } from "../../cookies-config";
+import { clearLocaltorage } from "../chatRooms/controls/functions";
+
+const SignIn = ({ setIsAuth, isAuth }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const doccumentRef = useMemo(() => collection(db, "users"), []);
+
+  const queryParams = useMemo(() => query(doccumentRef), [doccumentRef]);
+
+  const [doccument] = UseGetDoccument(queryParams);
+  const users = useMemo(() => {
+    return doccument.map((obj) => obj.user);
+  }, [doccument]);
+  console.log("users", users);
+
   const handleGoogleSignIn = async () => {
     try {
-      const setAuth = setIsAuth;
-      const signInData = await signInWithGoogle(setAuth);
-      dispatch(initiateCurrentUser(signInData));
+      if (!isAuth) {
+        const signInData = await signInWithGoogle(
+          setIsAuth,
+          doccumentRef,
+          users
+        );
+        dispatch(initiateCurrentUser(signInData));
+        dispatch(updateUsers(doccument));
+        navigate("/home");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       // Handle any errors that may occur during sign-in
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    cookies.remove("auth-token");
+    clearLocaltorage();
+  }, []);
+
+  console.log("all users", doccument);
   return (
     <div className="  w-full flex justify-center  items-center h-full bg-orange-100">
       <div className=" flex justify-betwee   w-full h-full ">

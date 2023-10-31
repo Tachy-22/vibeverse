@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        profile: "url('./assets/profile.jpg')",
+        home: "url('./assets/footer-texture.png')",
+      },
+    },
   },
   plugins: [],
 };

@@ -3,7 +3,7 @@ import { GrSend } from "react-icons/gr";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
-  addDoc,
+  // addDoc,
   serverTimestamp,
   query,
   where,
@@ -16,20 +16,66 @@ import UseGetDoccument from "../controls/hooks/useGetDoccument.js.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewRoom } from "../../redux/slice";
 import { Link } from "react-router-dom";
+import TextareaAutosize from "react-textarea-autosize";
+
+import { handleDoccumentAddition } from "../controls/functions/handleDoccumentAddition";
+import UseRefreshUser from "../controls/hooks/UseRefreshUser";
 
 const ChatRoom = () => {
   const dispatch = useDispatch();
-  const { room } = useSelector((state) => state.app);
+  const { room, currentUser } = useSelector((state) => state.app);
+  UseRefreshUser(currentUser);
+
   const [newMessage, setNewMessage] = useState("");
   const textAreaRef = useRef(null);
-  console.log("group room", room);
 
   const doccumentRef = useMemo(() => collection(db, "room-conversations"), []);
+  const messageAdditionContion = useMemo(
+    () => newMessage === "" && room === "",
+    [newMessage, room]
+  );
+
+  const user = useMemo(() => currentUser?.user, [currentUser]);
+
+  const messageObj = useMemo(
+    () => ({
+      text: newMessage,
+      createdAt: serverTimestamp(),
+      displayName: user?.displayName,
+      email: user?.email,
+      userUrl: user?.photoURL,
+      newRoom: room,
+    }),
+    [newMessage, room, user?.displayName, user?.email, user?.photoURL]
+  );
+  const messageSendingCleanUp = useCallback(() => {
+    setNewMessage("");
+  }, []);
+
   const queryParams = useMemo(
     () =>
       query(doccumentRef, where("newRoom", "==", room), orderBy("createdAt")),
     [doccumentRef, room]
   );
+
+  const handleMessageSending = useCallback(
+    (e) => {
+      e.preventDefault();
+      handleDoccumentAddition(
+        messageObj,
+        doccumentRef,
+        messageAdditionContion,
+        messageSendingCleanUp
+      );
+      console.log(messageObj, "messageObj");
+    },
+    [doccumentRef, messageAdditionContion, messageObj, messageSendingCleanUp]
+  );
+
+  const handleMessageChange = useCallback(() => {
+    setNewMessage(textAreaRef.current.value);
+  }, []);
+
   const [doccument] = UseGetDoccument(queryParams);
   const previousRoom = useMemo(
     () => (room === "" ? localStorage.getItem("current room") : room),
@@ -45,38 +91,14 @@ const ChatRoom = () => {
       dispatch(addNewRoom(previousRoom));
     }
   }, [dispatch, previousRoom, room]);
+  console.log("doccuments :", doccument);
 
-  const handleMessageSending = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        if (newMessage === "" && room === "") {
-          return;
-        } else {
-          const messageObj = {
-            text: newMessage,
-            createdAt: serverTimestamp(),
-            user: auth.currentUser.displayName,
-            userUrl: auth.currentUser.photoURL,
-            newRoom: room,
-          };
-          await addDoc(doccumentRef, messageObj);
-          console.log(newMessage, room);
-          setNewMessage("");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [doccumentRef, newMessage, room]
-  );
-  console.log("messages", doccument);
   return (
     <div className=" backdrop-brightness-50 backdrop-blur-sm  relative h-screen overflow-hidden  ">
       <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto ">
         <div className="bg-transparent   overflow-y-scroll  h-full ">
           <div className=" flex justify-start backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
-            <Link to="/">
+            <Link to="/home">
               <div className="pl-4">
                 <RiArrowGoBackFill className="text-xl font-thin text-gray-500" />
               </div>
@@ -92,13 +114,13 @@ const ChatRoom = () => {
                 <div
                   key={index}
                   className={`" ${
-                    auth.currentUser.displayName === message.user
+                    auth.currentUser.email === message.email
                       ? "justify-end "
                       : " justify-start"
                   } flex items-start gap-4 px-3 "`}
                 >
                   <div className=" ">
-                    {auth.currentUser.displayName !== message.user && (
+                    {auth.currentUser.email !== message.email && (
                       <img
                         src={message.userUrl}
                         alt=""
@@ -106,19 +128,19 @@ const ChatRoom = () => {
                       />
                     )}
                   </div>
-                  <div className="max-w-[80%] w-fit flex flex-col">
+                  <div className="max-w-[70%] w-fit flex flex-col">
                     <div
                       className={`" ${
-                        auth.currentUser.displayName === message.user
+                        auth.currentUser.email === message.email
                           ? "rounded-s-xl bg-blue-400 text-white"
-                          : "rounded-e-xl bg-white  "
+                          : "rounded-e-xl bg-white/90  "
                       }  p-3 rounded-t-xl  "`}
                     >
                       <p>{message.text}</p>
                     </div>
                     <p
                       className={`" text-gray-300 py-2 text-[0.7rem]  ${
-                        auth.currentUser.displayName === message.user
+                        auth.currentUser.email === message.email
                           ? "text-end"
                           : ""
                       }  "`}
@@ -139,13 +161,15 @@ const ChatRoom = () => {
         >
           <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">
             {" "}
-            <textarea
+            <TextareaAutosize
+              name="message"
+              id="message"
               ref={textAreaRef}
               type="text"
-              className="outline-none w-full bg-transparent px-2 py-2"
-              onChange={() => {
-                setNewMessage(textAreaRef.current.value);
-              }}
+              className="outline-none w-full bg-transparent px-2 py-2 min-h-max h-max max-h-30rem"
+              onChange={handleMessageChange}
+              maxRows={5}
+              minRows={1}
             />
             <button
               className=" p-3 border-white h-full relative   hover:scale-105"

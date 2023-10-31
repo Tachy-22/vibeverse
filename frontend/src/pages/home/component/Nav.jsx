@@ -5,13 +5,14 @@ import { BiSearchAlt2, BiMessageAdd } from "react-icons/bi";
 import AddRoom from "./AddRoom";
 
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const [menuDisplayArr, setMenuDisplayArray] = useState([false, false]);
   const [userProfileImgURL, setUserProfileImgURL] = useState("");
   const { currentUser } = useSelector((state) => state.app);
 
-  console.log("currentUser", currentUser);
+  
   const user = useMemo(() => currentUser?.user, [currentUser?.user]);
 
   useEffect(() => {
@@ -31,14 +32,14 @@ const Nav = () => {
   console.log("userProfileImgURL", userProfileImgURL, user);
   return (
     <div className=" flex justify-between flex-col border-b bg-black">
-      <div className="flex items-center justify-between z-10 bg-black pt-[1rem] px-[1rem]">
-        <div className="">
+      <div className="flex items-center justify-between z-30 bg-black pt-[1rem] px-[1rem]">
+        <Link className="" to="/profile">
           <img
             src={userProfileImgURL}
             alt=""
             className=" w-[3rem] h-[3rem] rounded-full"
           />
-        </div>
+        </Link>
         <div className="bg-orange-100 rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit px-[0.7rem] py-[0.2rem] hover:bg-orange-100/50">
           <LogoMobile />
         </div>
@@ -63,7 +64,7 @@ const Nav = () => {
       </div>
       <div
         className={`
-         justify-end py-2 w-full flex relative`}
+         justify-end py-2 w-full flex relative z-20`}
       >
         <div
           className={`${
