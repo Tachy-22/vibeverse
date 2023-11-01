@@ -148,7 +148,7 @@ const IndividualChatRoom = () => {
   }, [doccument.length]);
 
   return (
-    <div className=" backdrop-brightness-50 backdrop-blur-sm  relative h-screen overflow-hidden  ">
+    <div className=" backdrop-brightness-50 backdrop-blur-sm  relative max-h-screen overflow-hidden  ">
       <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
         {currentUser && (
           <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto ">
