@@ -14,7 +14,7 @@ import {
 } from "react";
 import { collection, query } from "firebase/firestore";
 import { db } from "../../firebase-config";
-import UseGetDoccument from "../controls/hooks/useGetDoccument.js";
+import UseGetDoccument from "../controls/hooks/UseGetDoccument.js";
 import { useNavigate } from "react-router-dom";
 import { cookies } from "../../cookies-config";
 import { clearLocaltorage } from "../chatRooms/controls/functions";

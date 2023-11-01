@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../../firebase-config";
 import { formatTimestamp } from "./controls/functions";
-import UseGetDoccument from "../controls/hooks/useGetDoccument";
+import UseGetDoccument from "../controls/hooks/UseGetDoccument";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewChat, addNewChatRecipient } from "../../redux/slice";
 import { Link } from "react-router-dom";

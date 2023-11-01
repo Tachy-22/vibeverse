@@ -9,7 +9,7 @@ import AppUsers from "./component/AppUsers";
 import { useEffect, useMemo } from "react";
 import { updateUsers } from "../../redux/slice";
 import { collection, query } from "firebase/firestore";
-import UseGetDoccument from "../controls/hooks/useGetDoccument.js";
+import UseGetDoccument from "../controls/hooks/UseGetDoccument.js";
 import { db } from "../../firebase-config";
 import useRefreshChat from "../controls/hooks/UseRefreshChat";
 import SignUpRedirect from "../error/SignUpRedirect";

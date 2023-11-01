@@ -3,7 +3,7 @@
 import { addDoc, collection, query } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import UseGetDoccument from "../../controls/hooks/useGetDoccument.js";
+import UseGetDoccument from "../../controls/hooks/UseGetDoccument.js";
 import { isRoomExisting } from "../../controls/functions/isRoomExisting";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewRoom, updateRooms } from "../../../redux/slice";
