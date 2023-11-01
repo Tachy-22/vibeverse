@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <div className=" w-full ">
       {currentUser && (
-        <div className=" h-screen xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
+        <div className=" h-screen xl:w-[40rem] lg:w-1/2 w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
           <div className="  text-white h-[40%]  flex flex-col">
             <div className="sticky top-0 z-40">
               {" "}
