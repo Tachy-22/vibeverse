@@ -5,7 +5,7 @@ import { handleDoccumentAddition } from "../../../controls/functions/handleDoccu
 import { serverTimestamp } from "firebase/firestore";
 import { isUserExisting } from "../../../controls/functions/isUserExisting";
 
-const signInWithGoogle = async (setAuth, doccumentRef, users) => {
+const signInWithGoogle = async (setIsAuth, doccumentRef, users) => {
   try {
     const result = await signInWithPopup(auth, provider);
     const refreshToken = result.user.refreshToken;
@@ -29,7 +29,7 @@ const signInWithGoogle = async (setAuth, doccumentRef, users) => {
       );
     cookies.set("auth-token", refreshToken);
 
-    setAuth(true);
+    setIsAuth(true);
     return result;
   } catch (error) {
     console.error(error);

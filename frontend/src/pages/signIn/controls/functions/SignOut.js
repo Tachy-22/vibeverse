@@ -5,7 +5,7 @@ import { clearLocaltorage } from "../../../chatRooms/controls/functions";
 
 const SignOut = () => {
   cookies.remove("auth-token");
- clearLocaltorage(); 
+  clearLocaltorage();
   signOut(auth)
     .then(() => {
       console.log("sined out");

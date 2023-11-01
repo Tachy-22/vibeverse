@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { addDoc, collection, query } from "firebase/firestore";
-import {  db } from "../../../firebase-config";
+import { db } from "../../../firebase-config";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import UseGetDoccument from "../../controls/hooks/useGetDoccument.js";
 import { isRoomExisting } from "../../controls/functions/isRoomExisting";
@@ -9,11 +9,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { addNewRoom, updateRooms } from "../../../redux/slice";
 //import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import UseRefreshUser from "../../controls/hooks/UseRefreshUser";
 
 const AddRoom = ({ handleMenuClose }) => {
   const { room, rooms, currentUser } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  UseRefreshUser(currentUser);
 
   const doccumentRef = useMemo(() => collection(db, "rooms"), []);
   const queryParams = useMemo(() => query(doccumentRef), [doccumentRef]);
@@ -71,7 +74,7 @@ const AddRoom = ({ handleMenuClose }) => {
           !isRoomExisting(roomInputValue, roomNames),
           " roomInputValue & !isRoomExisting(roomInputValue, roomNames)",
           roomInputValue !== "" && !isRoomExisting(roomInputValue, roomNames),
-          currentUser.user
+          currentUser?.user
         );
         if (
           roomInputValue !== "" &&
@@ -98,7 +101,7 @@ const AddRoom = ({ handleMenuClose }) => {
       updateRoomsCondition,
       roomInputValue,
       roomNames,
-      currentUser.user,
+      currentUser?.user,
       doccumentRef,
       dispatch,
       doccument,

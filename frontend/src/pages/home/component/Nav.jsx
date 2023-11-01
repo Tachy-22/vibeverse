@@ -12,7 +12,6 @@ const Nav = () => {
   const [userProfileImgURL, setUserProfileImgURL] = useState("");
   const { currentUser } = useSelector((state) => state.app);
 
-  
   const user = useMemo(() => currentUser?.user, [currentUser?.user]);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const Nav = () => {
   console.log("userProfileImgURL", userProfileImgURL, user);
   return (
     <div className=" flex justify-between flex-col border-b bg-black">
-      <div className="flex items-center justify-between z-30 bg-black pt-[1rem] px-[1rem]">
+      <div className="flex items-center  justify-between z-30 bg-black pt-[1rem] px-[1rem]">
         <Link className="" to="/profile">
           <img
             src={userProfileImgURL}
@@ -40,7 +39,7 @@ const Nav = () => {
             className=" w-[3rem] h-[3rem] rounded-full"
           />
         </Link>
-        <div className="bg-orange-100 rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit px-[0.7rem] py-[0.2rem] hover:bg-orange-100/50">
+        <div className=" border bg-white/20  flex justify-center items-center rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit pl-[0.7rem] py-[0.25rem] pb-[0.4rem] pr-[0.5rem] hover:scale-[105%] ">
           <LogoMobile />
         </div>
         <div className="flex gap-2">

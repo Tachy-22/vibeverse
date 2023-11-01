@@ -12,6 +12,9 @@ import { collection, query } from "firebase/firestore";
 import UseGetDoccument from "../controls/hooks/useGetDoccument.js";
 import { db } from "../../firebase-config";
 import useRefreshChat from "../controls/hooks/UseRefreshChat";
+import SignUpRedirect from "../error/SignUpRedirect";
+import { recentUser } from "../../localstorage-config";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -31,59 +34,65 @@ const Home = () => {
   }, [dispatch, doccument, navigate]);
 
   return (
-    <div className=" h-screen xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto  flex flex-col relative  backdrop-brightness-50 backdrop-blur-sm">
-      <div className="  text-white h-[40%] flex flex-col">
-        <div className="sticky top-0 z-40">
-          {" "}
-          <Nav />
+    <div className=" w-full ">
+      {currentUser && (
+        <div className=" h-screen xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
+          <div className="  text-white h-[40%]  flex flex-col">
+            <div className="sticky top-0 z-40">
+              {" "}
+              <Nav />
+            </div>
+
+            {/* shows 10 random users */}
+
+            <AppUsers />
+          </div>
+
+          <div className=" bg-orange-100/30 relative h-full overflow-hidden flex flex-col  pt-8 rounded-t-[3rem] ">
+            <nav className="sticky top-0 px-4 p-2 flex justify-between gap-4">
+              <NavLink
+                to="/home/"
+                activeClassName="bg-white"
+                className={({ isActive }) =>
+                  isActive
+                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
+                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
+                }
+              >
+                All
+              </NavLink>
+
+              <NavLink
+                to="/home/my-Groups"
+                activeClassName="bg-white"
+                className={({ isActive }) =>
+                  isActive
+                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
+                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
+                }
+              >
+                My groups
+              </NavLink>
+              <NavLink
+                activeClassName="bg-white"
+                to="/home/chats"
+                className={({ isActive }) =>
+                  isActive
+                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
+                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
+                }
+              >
+                Chats
+              </NavLink>
+            </nav>
+            <section className="overflow-y-auto  relative h-full letters-bg">
+              <Outlet />
+            </section>
+          </div>
         </div>
-
-        {/* shows 10 random users */}
-
-        <AppUsers />
-      </div>
-
-      <div className=" bg-orange-100/30 relative h-full overflow-hidden flex flex-col  pt-8 rounded-t-[3rem] ">
-        <nav className="sticky top-0 px-4 p-2 flex justify-between gap-4">
-          <NavLink
-            to="/home/"
-            activeClassName="bg-white"
-            className={({ isActive }) =>
-              isActive
-                ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-            }
-          >
-            All
-          </NavLink>
-
-          <NavLink
-            to="/home/my-Groups"
-            activeClassName="bg-white"
-            className={({ isActive }) =>
-              isActive
-                ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-            }
-          >
-            My groups
-          </NavLink>
-          <NavLink
-            activeClassName="bg-white"
-            to="/home/chats"
-            className={({ isActive }) =>
-              isActive
-                ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-            }
-          >
-            Chats
-          </NavLink>
-        </nav>
-        <section className="overflow-y-auto  relative h-full letters-bg">
-          <Outlet />
-        </section>
-      </div>
+      )}
+      {recentUser && !currentUser && <LoaderSpinner />}
+      {!recentUser && !currentUser && <SignUpRedirect />}
     </div>
   );
 };
