@@ -8,16 +8,6 @@ import {
 
 const UseGetDoccument = (queryParams) => {
   const [doccument, setDoccument] = useState([]);
-  // const {
-  //   // currentUser,
-  //   currentChatRecipient,
-  // } = useSelector((state) => state.app);
-
-  // const currentDoccument = useMemo(() => doccument, [doccument]);
-
-  // useEffect(() => {
-  //   console.log("currentDoccument", currentDoccument);
-  // }, [currentDoccument]);
 
   useEffect(() => {
     try {
