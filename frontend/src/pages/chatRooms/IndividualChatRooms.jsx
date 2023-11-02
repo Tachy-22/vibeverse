@@ -171,13 +171,13 @@ const IndividualChatRoom = () => {
   }, [doccument.length, scrollToBottom]);
 
   return (
-    <div className=" backdrop-brightness-50 backdrop-blur-sm  relative max-h-screen h-screen overflow-hidden  ">
+    <div className=" backdrop-brightness-50 backdrop-blur-sm     relative max-h-screen h-screen overflow-hidden   ">
       <ErrorBoundary
         className="border-green-400 border"
         FallbackComponent={<LoaderSpinner />}
       >
         {currentUser && (
-          <div className=" h-full bg-fixed  letters-bg bg-bottom overflow-hidden   w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto  flex flex-col">
+          <div className=" h-full bg-fixed letters-bg   bg-bottom overflow-hidden   w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto  flex flex-col">
             <div
               ref={chatRef}
               className="bg-transparent  overflow-y-auto   h-full "
@@ -200,7 +200,7 @@ const IndividualChatRoom = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-max flex flex-col border-green-500 py-4 px-[0.5rem] mb-[6rem] ">
+              <div className="h-max flex flex-col border-green-500 py-4 px-[0.5rem] mb-[7rem] ">
                 {doccument?.map((message, index) => {
                   return (
                     <div
@@ -242,7 +242,7 @@ const IndividualChatRoom = () => {
 
             <form
               action=""
-              className=" absolute bottom-0  border-red-500  text-black  w-full py-8   flex justify-center  "
+              className=" absolute bottom-0 lg:pb-0 pb-[5rem] border-red-500  text-black  w-full py-8   flex justify-center  "
               onSubmit={handleMessageSending}
             >
               <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">

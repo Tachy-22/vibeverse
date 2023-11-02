@@ -34,7 +34,7 @@ const Home = () => {
   }, [dispatch, doccument, navigate]);
 
   return (
-    <div className=" w-full  h-screen overflow-y-auto flex flex-col  border-green-500">
+    <div className=" w-full  h-screen overflow-y-auto flex flex-col  border-green-500 ">
       {currentUser && (
         <div className=" h-full xl:w-[40rem] flex-grow lg:w-1/2 md:w-[90%] w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
           <div className=" flex-grow  text-white h-full flex flex-col  overflow-y-auto border-blue-400">
