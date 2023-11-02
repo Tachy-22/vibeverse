@@ -50,15 +50,32 @@ const IndividualChatRoom = () => {
   const textAreaRef = useRef(null);
   const chatRef = useRef(null);
 
-  const scrollToBottom = () => {
+  
+  const scrollToBottom = useCallback(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
+  }, [scrollToBottom]);
+
+  const handleResize = useCallback(() => {
+    // Your code to run when the window is resized
+    console.log("Window was resized!");
+    scrollToBottom();
   }, []);
+
+  // Add a resize event listener when the component mounts
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]); // The empty dependency array ensures that the effect runs once when the component mounts
 
   const doccumentRef = useMemo(
     () => collection(db, "personal-conversations"),
@@ -109,7 +126,13 @@ const IndividualChatRoom = () => {
       scrollToBottom();
       console.log(messageObj, "messageObj");
     },
-    [doccumentRef, messageAdditionContion, messageObj, messageSendingCleanUp]
+    [
+      doccumentRef,
+      messageAdditionContion,
+      messageObj,
+      messageSendingCleanUp,
+      scrollToBottom,
+    ]
   );
 
   const handleMessageChange = useCallback(() => {
@@ -145,16 +168,19 @@ const IndividualChatRoom = () => {
 
   useEffect(() => {
     doccument.length !== 0 && scrollToBottom();
-  }, [doccument.length]);
+  }, [doccument.length, scrollToBottom]);
 
   return (
-    <div className=" backdrop-brightness-50 backdrop-blur-sm  relative max-h-screen overflow-hidden  ">
-      <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
+    <div className=" backdrop-brightness-50 backdrop-blur-sm  relative max-h-screen h-screen overflow-hidden  ">
+      <ErrorBoundary
+        className="border-green-400 border"
+        FallbackComponent={<LoaderSpinner />}
+      >
         {currentUser && (
-          <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto ">
+          <div className=" h-full bg-fixed  letters-bg bg-bottom overflow-hidden   w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto  flex flex-col">
             <div
               ref={chatRef}
-              className="bg-transparent   overflow-y-auto  h-full "
+              className="bg-transparent  overflow-y-auto   h-full "
             >
               <div className=" flex flex-col  backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
                 <div className="flex justify-start items-center ">
@@ -174,7 +200,7 @@ const IndividualChatRoom = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-max  py-4 px-[0.5rem] mb-[6rem] ">
+              <div className="h-max flex flex-col border-green-500 py-4 px-[0.5rem] mb-[6rem] ">
                 {doccument?.map((message, index) => {
                   return (
                     <div
@@ -216,7 +242,7 @@ const IndividualChatRoom = () => {
 
             <form
               action=""
-              className="  absolute bottom-0 text-black  w-full my-8   flex justify-center  "
+              className=" absolute bottom-0  border-red-500  text-black  w-full py-8   flex justify-center  "
               onSubmit={handleMessageSending}
             >
               <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">

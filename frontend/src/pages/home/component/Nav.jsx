@@ -32,12 +32,13 @@ const Nav = () => {
   return (
     <div className=" flex justify-between flex-col border-b bg-black">
       <div className="flex items-center  justify-between z-30 bg-black pt-[1rem] px-[1rem]">
-        <Link className="" to="/profile">
+        <Link className=" relative" to="/profile">
           <img
             src={userProfileImgURL}
             alt=""
-            className=" w-[3rem] h-[3rem] rounded-full"
+            className=" w-[3rem] h-[3rem] rounded-full "
           />
+          <span className="w-2 h-2 bg-green-500 rounded-full absolute right-[3px] bottom-[1px]"></span>
         </Link>
         <div className=" border bg-white/20  flex justify-center items-center rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit pl-[0.7rem] py-[0.25rem] pb-[0.4rem] pr-[0.5rem] hover:scale-[105%] ">
           <LogoMobile />

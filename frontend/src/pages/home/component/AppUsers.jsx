@@ -14,7 +14,12 @@ const AppUsers = () => {
   const navigate = useNavigate();
   UseRefreshUser(currentUser);
   useRefreshChat(currentChat);
+
   const memoisedUser = useMemo(() => currentUser?.user, [currentUser]);
+  const filteredUsers = useMemo(
+    () => users.filter((user) => user.user !== memoisedUser.email),
+    [memoisedUser.email, users]
+  );
 
   const handleChatNavigation = useCallback(
     (chatRecipient) => {
@@ -31,6 +36,8 @@ const AppUsers = () => {
     [dispatch, memoisedUser?.email, navigate]
   );
 
+  console.log("filteredUsers :", filteredUsers);
+
   return (
     <div className="  flex flex-col   gap-4 p-4 text-white/70">
       <h2>Current users:</h2>
@@ -42,9 +49,9 @@ const AppUsers = () => {
             </div>
           }
         >
-          {users.length !== 0 ? (
+          {filteredUsers.length !== 0 ? (
             <ul className="flex  gap-4  py-4  ">
-              {users.map((item, index) => {
+              {filteredUsers.map((item, index) => {
                 return (
                   <li
                     onClick={() => {

@@ -9,7 +9,7 @@ import LoaderSpinner from "../../components/LoaderSpinner";
 
 import SignUpRedirect from "../error/SignUpRedirect";
 import { recentUser } from "../../localstorage-config";
-
+import { BiPhoneCall } from "react-icons/bi";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.app);
@@ -46,7 +46,7 @@ const Profile = () => {
   return (
     <Suspense fallback={<LoaderSpinner />}>
       {currentUser && (
-        <div className=" h-screen bg-cover  xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto  flex flex-col relative text-white">
+        <div className=" h-screen bg-cover  xl:w-[40rem] lg:w-1/2 md:w-[85%] mx-auto  flex flex-col relative text-white">
           <div className=" text-gray-300  flex justify-between w-full absolute px-2 top-0 z-40 py-4">
             <Link to="/home" className="">
               <RiArrowGoBackFill className="text-2xl font-thin " />
@@ -56,7 +56,7 @@ const Profile = () => {
 
           <div
             style={{ "--image-url": `url(${imageURL})` }}
-            className={`" w-full flex bg-[image:var(--image-url)] relative flex-col items-center bg-cover justify-start px-3  h-[18rem] ] backdrop-brightness-[20%] `}
+            className={`" w-full flex bg-[image:var(--image-url)] relative flex-col items-center bg-cover justify-start px-3  min-h-[10rem] ] backdrop-brightness-[20%] `}
           >
             <input
               onChange={handleFileChange}
@@ -75,40 +75,43 @@ const Profile = () => {
               <p className="py-4 ">{currentUser.user.displayName}</p>
             </div>
           </div>
-          <div className="bg-profile border-t-[2px] bg-contain bg-gray-400 px-3 h-full pt-[7rem] border-blue-300  ">
-            <div className="border-t flex flex-col py-4 gap-2">
-              <h2 className="">Email:</h2>
-              <div className="flex gap-3 items-center">
-                <div className=" bg-gray-700 p-2 text-xl rounded-full">
-                  <AiOutlineMail />
-                </div>
 
-                <p className="">{currentUser.user.email}</p>
+          <Suspense fallback={<LoaderSpinner />}>
+            <div className="bg-profile border-t-[2px] bg-cover bg-center bg-gray-400 px-3 h-max flex-grow pt-[7rem] border-blue-300  ">
+              <div className="border-t flex flex-col py-4 gap-2">
+                <h2 className="">Email:</h2>
+                <div className="flex gap-3 items-center">
+                  <div className=" bg-gray-700 p-2 text-xl rounded-full">
+                    <AiOutlineMail />
+                  </div>
+
+                  <p className="">{currentUser.user.email}</p>
+                </div>
+              </div>
+              <div className="border-t flex flex-col py-4 gap-2">
+                <h2 className="">Phone number:</h2>
+                <div className="flex gap-3 items-center">
+                  <div className=" bg-gray-700 p-2 text-xl rounded-full">
+                    <BiPhoneCall/>
+                  </div>
+
+                  <p className="">{currentUser.user.createdAt}</p>
+                </div>
+              </div>
+              <div className="border-t flex flex-col py-4 gap-2">
+                <a href="/" className="flex gap-3 justify-end items-center  ">
+                  <button
+                    onClick={() => {
+                      SignOut();
+                    }}
+                    className="button"
+                  >
+                    <span className="button-content">Sign out </span>{" "}
+                  </button>{" "}
+                </a>
               </div>
             </div>
-            <div className="border-t flex flex-col py-4 gap-2">
-              <h2 className="">Email:</h2>
-              <div className="flex gap-3 items-center">
-                <div className=" bg-gray-700 p-2 text-xl rounded-full">
-                  <AiOutlineMail />
-                </div>
-
-                <p className="">{currentUser.user.email}</p>
-              </div>
-            </div>
-            <div className="border-t flex flex-col py-4 gap-2">
-              <a href="/" className="flex gap-3 justify-end items-center  ">
-                <button
-                  onClick={() => {
-                    SignOut();
-                  }}
-                  className="button"
-                >
-                  <span className="button-content">Sign out </span>{" "}
-                </button>{" "}
-              </a>
-            </div>
-          </div>
+          </Suspense>
         </div>
       )}
       {recentUser && !currentUser && <LoaderSpinner />}

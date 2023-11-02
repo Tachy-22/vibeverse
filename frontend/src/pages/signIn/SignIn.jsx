@@ -24,7 +24,7 @@ import { useState } from "react";
 const SignIn = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
   useEffect(() => {
-    setIsAuth(cookies.get("auth-token"));
+    setIsAuth(undefined);
   }, []);
 
   console.log("cookie", cookies.get("auth-token"));
@@ -88,7 +88,7 @@ const SignIn = () => {
               {" "}
               <LogoDeskop />
             </div>
-            <div className="flex flex-col sm:w-[30rem] w-full  justify-between gap-6 xl:p-[3rem] p-3 shadow-[100%] drop-shadow-2xl rounded-md bg-red-100/ backdrop-blur-3xl ">
+            <div className="flex flex-col sm:w-[30rem] w-full  justify-between gap-6 xl:p-[3rem] p-3 shadow-[100%] drop-shadow-2xl rounded-md bg-red-100/ backdrop-blur-[5rem] ">
               <div className="flex justify-between">
                 {" "}
                 <span className="font-semibold">Sign in</span>
@@ -97,7 +97,7 @@ const SignIn = () => {
                   <a className="text-blue-400 cursor-pointer hover:underline">
                     Create account
                   </a> */}
-                  <PiSignatureThin className="text-blue-400 cursor-pointer  text-3xl" />
+                  <PiSignatureThin className="text-blue-400 cursor-pointer  text-4xl font-extrabold" />
                 </span>
               </div>
               <div className=" flex justify-center">

@@ -104,7 +104,7 @@ const ChatRoom = () => {
     <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
       {currentUser ? (
         <div className=" backdrop-brightness-50 backdrop-blur-sm  relative h-screen overflow-hidden  ">
-          <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[30rem] mx-auto ">
+          <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto ">
             <div className="bg-transparent   overflow-y-scroll  h-full ">
               <div className=" flex justify-start backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
                 <Link to="/home">

@@ -34,10 +34,10 @@ const Home = () => {
   }, [dispatch, doccument, navigate]);
 
   return (
-    <div className=" w-full ">
+    <div className=" w-full  h-screen overflow-y-auto flex flex-col  border-green-500">
       {currentUser && (
-        <div className=" h-screen xl:w-[40rem] lg:w-1/2 w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
-          <div className="  text-white h-[40%]  flex flex-col">
+        <div className=" h-full xl:w-[40rem] flex-grow lg:w-1/2 md:w-[90%] w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
+          <div className=" flex-grow  text-white h-full flex flex-col  overflow-y-auto border-blue-400">
             <div className="sticky top-0 z-40">
               {" "}
               <Nav />
@@ -46,48 +46,48 @@ const Home = () => {
             {/* shows 10 random users */}
 
             <AppUsers />
-          </div>
 
-          <div className=" bg-orange-100/30 relative h-full overflow-hidden flex flex-col  pt-8 rounded-t-[3rem] ">
-            <nav className="sticky top-0 px-4 p-2 flex justify-between gap-4">
-              <NavLink
-                to="/home/"
-                activeClassName="bg-white"
-                className={({ isActive }) =>
-                  isActive
-                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-                }
-              >
-                All
-              </NavLink>
+            <div className=" bg-orange-100/30  text-black   border-red-600  flex flex-col  flex-grow  pt-8 rounded-t-[3rem] ">
+              <nav className="sticky top-0 px-4 p-2 h-fit flex justify-between gap-4">
+                <NavLink
+                  to="/home/"
+                  activeClassName="bg-white"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " rounded-xl text-center bg-white  flex justify-center items-center px-2 p-1 w-full"
+                      : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
+                  }
+                >
+                  All
+                </NavLink>
 
-              <NavLink
-                to="/home/my-Groups"
-                activeClassName="bg-white"
-                className={({ isActive }) =>
-                  isActive
-                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-                }
-              >
-                My groups
-              </NavLink>
-              <NavLink
-                activeClassName="bg-white"
-                to="/home/chats"
-                className={({ isActive }) =>
-                  isActive
-                    ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
-                    : " backdrop-brightness-[50%] px-2 p-1 w-full rounded-xl text-white text-center"
-                }
-              >
-                Chats
-              </NavLink>
-            </nav>
-            <section className="overflow-y-auto  relative h-full letters-bg">
-              <Outlet />
-            </section>
+                <NavLink
+                  to="/home/my-Groups"
+                  activeClassName="bg-white"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
+                      : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
+                  }
+                >
+                  My groups
+                </NavLink>
+                <NavLink
+                  activeClassName="bg-white"
+                  to="/home/chats"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
+                      : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
+                  }
+                >
+                  Chats
+                </NavLink>
+              </nav>
+              <section className="  flex flex-col  h-full letters-bg  border-yellow-500 ">
+                <Outlet />
+              </section>
+            </div>
           </div>
         </div>
       )}
