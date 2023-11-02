@@ -34,11 +34,11 @@ const Home = () => {
   }, [dispatch, doccument, navigate]);
 
   return (
-    <div className=" w-full  h-screen overflow-y-auto flex flex-col  border-green-500 ">
+    <div className=" w-full  h-screen  flex flex-col  border-green-500  ">
       {currentUser && (
         <div className=" h-full xl:w-[40rem] flex-grow lg:w-1/2 md:w-[90%] w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
-          <div className=" flex-grow  text-white h-full flex flex-col  overflow-y-auto border-blue-400">
-            <div className="sticky top-0 z-40">
+          <div className=" flex-grow  text-white h-full flex flex-col    border-blue-400">
+            <div className="sticky top-0  z-40">
               {" "}
               <Nav />
             </div>
@@ -47,7 +47,7 @@ const Home = () => {
 
             <AppUsers />
 
-            <div className=" bg-orange-100/30  text-black   border-red-600  flex flex-col  flex-grow  pt-8 rounded-t-[3rem] ">
+            <div className=" bg-orange-100/30  text-black   border-red-600 w-full  flex flex-col  flex-grow  pt-8 rounded-t-[3rem] ">
               <nav className="sticky top-0 px-4 p-2 h-fit flex justify-between gap-4">
                 <NavLink
                   to="/home/"
@@ -84,7 +84,7 @@ const Home = () => {
                   Chats
                 </NavLink>
               </nav>
-              <section className="  flex flex-col  h-full letters-bg  border-yellow-500 ">
+              <section className="  flex flex-col  h-full letters-bg w-full  border-yellow-500 ">
                 <Outlet />
               </section>
             </div>

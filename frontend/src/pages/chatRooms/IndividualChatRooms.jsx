@@ -242,7 +242,7 @@ const IndividualChatRoom = () => {
 
             <form
               action=""
-              className=" absolute bottom-0 lg:pb-0 pb-[5rem] border-red-500  text-black  w-full py-8   flex justify-center  "
+              className=" absolute bottom-0 pb-[5rem] border-red-500  text-black  w-full py-8   flex justify-center  "
               onSubmit={handleMessageSending}
             >
               <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">

@@ -56,7 +56,7 @@ const Profile = () => {
 
           <div
             style={{ "--image-url": `url(${imageURL})` }}
-            className={` w-full flex bg-[image:var(--image-url)] relative flex-col items-center bg-cover justify-start px-3  min-h-[10rem] h-[18rem] backdrop-brightness-[20%] `}
+            className={` w-full flex bg-[image:var(--image-url)] relative flex-col items-center bg-cover justify-start px-3  min-h-[10rem] h-[12rem] backdrop-brightness-[20%] `}
           >
             <input
               onChange={handleFileChange}

@@ -1,11 +1,11 @@
+import { Outlet } from "react-router-dom";
 
-import SignIn from "./pages/signIn/SignIn";
-
+import Modal from "./components/Modal";
 function App() {
-  
   return (
     <div className="h-screen">
-      <SignIn />
+      <Modal />
+      <Outlet />
     </div>
   );
 }

@@ -7,6 +7,8 @@ const initialState = {
   currentChatRecipient: null,
   rooms: [],
   users: [],
+  isModalVisible: false,
+  modalMessage: "",
 };
 
 export const appSlice = createSlice({
@@ -37,6 +39,14 @@ export const appSlice = createSlice({
       ...state,
       users: action.payload,
     }),
+    updateModalVisibility: (state, action) => ({
+      ...state,
+      isModalVisible: action.payload,
+    }),
+    updateModalMessage: (state, action) => ({
+      ...state,
+      modalMessage: action.payload,
+    }),
   },
 });
 
@@ -48,6 +58,8 @@ export const {
   updateUsers,
   addNewChat,
   addNewChatRecipient,
+  updateModalVisibility,
+  updateModalMessage,
 } = appSlice.actions;
 
 export default appSlice.reducer;

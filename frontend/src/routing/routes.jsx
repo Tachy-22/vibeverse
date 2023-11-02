@@ -7,45 +7,63 @@ import AllGroups from "../pages/home/component/AllGroups";
 import Chats from "../pages/home/component/Chats";
 import MyGroups from "../pages/home/component/MyGroups";
 import Profile from "../pages/profile/Profile";
+import SignIn from "../pages/signIn/SignIn";
 
 export const routes = [
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-    errorElement: <ErrorPage />,
     children: [
       {
-        path: "/home/",
-        element: <AllGroups />,
+        path: "/",
+        element: <SignIn />,
+        errorElement: <ErrorPage />,
       },
       {
-        path: "/home/chats",
-        element: <Chats />,
+        path: "/chat/:chatName",
+        element: <IndividualChatRoom />,
+        errorElement: <ErrorPage />,
       },
       {
-        path: "/home/my-groups",
-        element: <MyGroups />,
+        path: "/profile",
+        element: <Profile />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "/home/",
+            element: <AllGroups />,
+          },
+          {
+            path: "/home/chats",
+            element: <Chats />,
+          },
+          {
+            path: "/home/my-groups",
+            element: <MyGroups />,
+          },
+        ],
+      },
+      {
+        path: "/group/:groupName",
+        element: <ChatRoom />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "/chat/:chatName",
+        element: <IndividualChatRoom />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+        errorElement: <ErrorPage />,
       },
     ],
-  },
-  {
-    path: "/group/:groupName",
-    element: <ChatRoom />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/chat/:chatName",
-    element: <IndividualChatRoom />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-    errorElement: <ErrorPage />,
   },
 ];

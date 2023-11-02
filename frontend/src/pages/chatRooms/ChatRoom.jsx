@@ -165,7 +165,7 @@ const ChatRoom = () => {
 
             <form
               action=""
-              className="  absolute bottom-0 text-black  w-full my-8   flex justify-center  "
+              className="  absolute bottom-0 text-black  w-full my-8   pb-[5rem]   flex justify-center  "
               onSubmit={handleMessageSending}
             >
               <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">

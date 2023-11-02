@@ -6,13 +6,20 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import UseGetDoccument from "../../controls/hooks/UseGetDoccument.js";
 import { isRoomExisting } from "../../controls/functions/isRoomExisting";
 import { useSelector, useDispatch } from "react-redux";
-import { addNewRoom, updateRooms } from "../../../redux/slice";
+import {
+  addNewRoom,
+  updateModalMessage,
+  updateModalVisibility,
+  updateRooms,
+} from "../../../redux/slice";
 //import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import UseRefreshUser from "../../controls/hooks/UseRefreshUser";
 
 const AddRoom = ({ handleMenuClose }) => {
-  const { room, rooms, currentUser } = useSelector((state) => state.app);
+  const { room, rooms, currentUser, isModalVisible } = useSelector(
+    (state) => state.app
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,7 +42,13 @@ const AddRoom = ({ handleMenuClose }) => {
     roomInputValue !== "" &&
     !isRoomExisting(roomInputValue, roomNames);
 
-  const previousRoom = useMemo(() => localStorage.getItem("current room"), []);
+  const previousRoom = useMemo(
+    () =>
+      localStorage.getItem("current room") === ""
+        ? null
+        : localStorage.getItem("current room"),
+    []
+  );
 
   useEffect(() => {
     if (roomInputValue !== "" && roomInputValue) {
@@ -48,8 +61,8 @@ const AddRoom = ({ handleMenuClose }) => {
   }, [dispatch, previousRoom, room, roomInputValue]);
 
   useEffect(() => {
-    dispatch(addNewRoom(roomInputValue));
-  }, [dispatch, roomInputValue]);
+    previousRoom !== null && dispatch(addNewRoom(roomInputValue));
+  }, [dispatch, previousRoom, roomInputValue]);
 
   useEffect(() => {
     dispatch(updateRooms(doccument));
@@ -64,7 +77,7 @@ const AddRoom = ({ handleMenuClose }) => {
       try {
         //  dispatch(addNewRoom(roomInputValue));
         console.log("NEW ROOM NAVIGATED TO", "previousRoom", room);
-        navigate(`/group/${room}`);
+        roomInputValue !== "" && navigate(`/group/${room}`);
         console.log(
           "updateRoomsCondition",
           updateRoomsCondition,
@@ -122,13 +135,17 @@ const AddRoom = ({ handleMenuClose }) => {
       console.log("setting new room");
       localStorage.setItem("current room", room);
     }
-    handleMenuClose();
+    if (roomInputValue === "") {
+      dispatch(updateModalVisibility(true)) &&
+        dispatch(updateModalMessage("Enter a valid room !"));
+    }
+    !isModalVisible && handleMenuClose();
   };
   console.log("room input:", roomInputValue);
   return (
     <form
       action=""
-      className=" w-full bg-orange-100/40 backdrop-blur-md h-[10rem] p-1 text-black"
+      className=" w-full bg-orange-100/40 backdrop-blur-md h-[10rem] p-1 text-black "
       onSubmit={handleRoomNavigation}
     >
       <input ref={roomRef} type="text" className=" border" />
@@ -137,7 +154,7 @@ const AddRoom = ({ handleMenuClose }) => {
         <span className="button-content">Add room </span>
       </button>
 
-      <p className="">current room: {room}</p>
+      <p className="">Previous room: {room}</p>
     </form>
   );
 };
