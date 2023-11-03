@@ -102,7 +102,7 @@ const Profile = () => {
                 <a href="/" className="flex gap-3 justify-end items-center  ">
                   <button
                     onClick={() => {
-                      SignOut();
+                      SignOut(currentUser);
                     }}
                     className="button"
                   >

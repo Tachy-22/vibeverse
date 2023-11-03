@@ -1,4 +1,7 @@
 export const serializedUser = localStorage.getItem("recent user");
+
+
+
 export const recentUser = JSON.parse(serializedUser);
 
 export const recentChat = localStorage.getItem("recent chat");

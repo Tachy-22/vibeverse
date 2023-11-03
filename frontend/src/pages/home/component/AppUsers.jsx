@@ -17,8 +17,8 @@ const AppUsers = () => {
 
   const memoisedUser = useMemo(() => currentUser?.user, [currentUser]);
   const filteredUsers = useMemo(
-    () => users.filter((user) => user.user !== memoisedUser.email),
-    [memoisedUser.email, users]
+    () => users.filter((user) => user.user !== memoisedUser?.email),
+    [memoisedUser?.email, users]
   );
 
   const handleChatNavigation = useCallback(
@@ -39,7 +39,7 @@ const AppUsers = () => {
   console.log("filteredUsers :", filteredUsers);
 
   return (
-    <div className="  flex flex-col   gap-4 p-4 text-white/70">
+    <div className="  flex flex-col    px-4 pt-4 text-white/70">
       <h2>Current users:</h2>
       <div className="overflow-x-auto ">
         <Suspense
@@ -50,7 +50,7 @@ const AppUsers = () => {
           }
         >
           {filteredUsers.length !== 0 ? (
-            <ul className="flex  gap-4  py-4  ">
+            <ul className="flex  gap-4  pt-4  ">
               {filteredUsers.map((item, index) => {
                 return (
                   <li
@@ -58,7 +58,7 @@ const AppUsers = () => {
                       handleChatNavigation(item);
                     }}
                     key={index}
-                    className=" max-w-[30rem] flex flex-col justify-center mb-4  hover:scale-[102%]"
+                    className=" max-w-[30rem] flex flex-col justify-center mb-2  hover:scale-[102%]"
                   >
                     <div className="flex border mx-auto relative bg-white text-black rounded-full  w-[3rem] flex-grow h-[3rem] justify-center items-center flex-col gap-2 ">
                       <img
@@ -66,6 +66,9 @@ const AppUsers = () => {
                         alt=""
                         className=" absolute rounded-full w-full"
                       />
+                      {item.isLogedIn && (
+                        <span className="w-3 h-3 bg-green-400 rounded-full absolute right-0 bottom-[1px]"></span>
+                      )}
                     </div>
                     <p className=" text-sm py-2 w-min text-gray-300 text-center">
                       {" "}

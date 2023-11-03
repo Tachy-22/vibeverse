@@ -7,8 +7,8 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import UseRefreshUser from "../controls/hooks/UseRefreshUser";
 import AppUsers from "./component/AppUsers";
 import { useEffect, useMemo } from "react";
-import { updateUsers } from "../../redux/slice";
-import { collection, query } from "firebase/firestore";
+import { initiateCurrentUser, updateUsers } from "../../redux/slice";
+import { collection, doc, query, updateDoc } from "firebase/firestore";
 import UseGetDoccument from "../controls/hooks/UseGetDoccument.js";
 import { db } from "../../firebase-config";
 import useRefreshChat from "../controls/hooks/UseRefreshChat";
@@ -24,7 +24,7 @@ const Home = () => {
   const queryParams = useMemo(() => query(doccumentRef), [doccumentRef]);
 
   const [doccument] = UseGetDoccument(queryParams);
-  const { currentUser, currentChat } = useSelector((state) => state.app);
+  const { currentUser, currentChat, users } = useSelector((state) => state.app);
   UseRefreshUser(currentUser);
   useRefreshChat(currentChat);
 
@@ -33,12 +33,52 @@ const Home = () => {
     navigate("/home/");
   }, [dispatch, doccument, navigate]);
 
+  const updatedCurrentUser = useMemo(
+    () => users.filter((user) => user.uid === currentUser?.user?.uid),
+    [currentUser, users]
+  );
+
+  console.log(
+    "users",
+    users,
+    "current user",
+    currentUser,
+    "updatedCurrentUser",
+    { ...currentUser, id: updatedCurrentUser[0]?.id }
+  );
+
+  useEffect(() => {
+    if (currentUser.id) {
+      //Clock in
+      const clockIn = async () => {
+        const usersRef = doc(db, "users", `${currentUser.id}`);
+        await updateDoc(usersRef, {
+          isLogedIn: true,
+        });
+      };
+      clockIn();
+      return;
+    } else {
+      updatedCurrentUser[0]?.id &&
+        dispatch(
+          initiateCurrentUser({ ...currentUser, id: updatedCurrentUser[0]?.id })
+        ) &&
+        localStorage.setItem(
+          "recent user",
+          JSON.stringify({
+            ...currentUser,
+            id: updatedCurrentUser[0]?.id,
+          })
+        );
+    }
+  }, [currentUser, dispatch, updatedCurrentUser]);
+
   return (
     <div className=" w-full  h-screen  flex flex-col  border-green-500  ">
       {currentUser && (
-        <div className=" h-full xl:w-[40rem] flex-grow lg:w-1/2 md:w-[90%] w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
+        <div className=" h-full xl:w-[40rem]  border-green-400 flex-grow lg:w-1/2 md:w-[90%] w-full mx-auto  flex flex-col relative backdrop-brightness-[35%]   ">
           <div className=" flex-grow  text-white h-full flex flex-col    border-blue-400">
-            <div className="sticky top-0  z-40">
+            <div className="  z-40">
               {" "}
               <Nav />
             </div>
@@ -47,8 +87,8 @@ const Home = () => {
 
             <AppUsers />
 
-            <div className=" bg-orange-100/30  text-black   border-red-600 w-full  flex flex-col  flex-grow  pt-8 rounded-t-[3rem] ">
-              <nav className="sticky top-0 px-4 p-2 h-fit flex justify-between gap-4">
+            <div className=" bg-orange-100/30  sticky top-[0rem]  h-full text-black   border-red-600 w-full  flex flex-col  flex-grow   rounded-t-[3rem] ">
+              <nav className="p-6 h-fit flex justify-between gap-4">
                 <NavLink
                   to="/home/"
                   activeClassName="bg-white"
@@ -84,7 +124,7 @@ const Home = () => {
                   Chats
                 </NavLink>
               </nav>
-              <section className="  flex flex-col  h-full letters-bg w-full  border-yellow-500 ">
+              <section className=" backdrop-brightness-0  overflow-y-scroll flex flex-col flex-grow h-full letters-bg w-full  border-yellow-500  ">
                 <Outlet />
               </section>
             </div>

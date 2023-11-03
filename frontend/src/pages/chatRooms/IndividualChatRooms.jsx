@@ -50,7 +50,6 @@ const IndividualChatRoom = () => {
   const textAreaRef = useRef(null);
   const chatRef = useRef(null);
 
-  
   const scrollToBottom = useCallback(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -170,6 +169,7 @@ const IndividualChatRoom = () => {
     doccument.length !== 0 && scrollToBottom();
   }, [doccument.length, scrollToBottom]);
 
+  console.log("currentChatRecipient", currentChatRecipient);
   return (
     <div className=" backdrop-brightness-50 backdrop-blur-sm     relative max-h-screen h-screen overflow-hidden   ">
       <ErrorBoundary
@@ -196,7 +196,15 @@ const IndividualChatRoom = () => {
                       alt=""
                       className=" rounded-full w-[2.5rem]"
                     />
-                    <div className="">{currentChatRecipient?.displayName} </div>
+                    <div className="">
+                      {currentChatRecipient?.displayName}{" "}
+                      {currentChatRecipient?.isLogedIn && (
+                        <p className="text-sm">Online</p>
+                      )}
+                      {!currentChatRecipient?.isLogedIn && (
+                        <p className="text-sm">Offline</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

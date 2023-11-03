@@ -20,7 +20,7 @@ html {
   background-attachment: fixed;
   background-position: center;
   background-blend-mode: darken;
-
+  backdrop-filter: brightness(0);
   /* Adjust the blur radius as needed */
 }
 
