@@ -9,7 +9,7 @@ import { Suspense } from "react";
 
 const AppUsers = () => {
   const { users, currentChat, currentUser } = useSelector((state) => state.app);
-  console.log("my user", users);
+ // console.log("my user", users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   UseRefreshUser(currentUser);
@@ -36,7 +36,7 @@ const AppUsers = () => {
     [dispatch, memoisedUser?.email, navigate]
   );
 
-  console.log("filteredUsers :", filteredUsers);
+  //console.log("filteredUsers :", filteredUsers);
 
   return (
     <div className="  flex flex-col    px-4 pt-4 text-white/70">

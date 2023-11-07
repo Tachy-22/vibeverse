@@ -7,7 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 const SignOut = (currentUser) => {
   //clock out
   const clockOut = async () => {
-    console.log(`clocking ${currentUser.user.displayName} out`);
+    // console.log(`clocking ${currentUser.user.displayName} out`);
     const usersRef = doc(db, "users", `${currentUser.id}`);
     await updateDoc(usersRef, {
       isLogedIn: false,
@@ -18,8 +18,8 @@ const SignOut = (currentUser) => {
   clearLocaltorage();
   signOut(auth)
     .then(async () => {
-      console.log("sined out");
-      cookies.remove("auth-token");
+      // console.log("sined out");
+      // cookies.remove("auth-token");
     })
     .catch((error) => {
       console.log(error);

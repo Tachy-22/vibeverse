@@ -5,7 +5,7 @@ import { previousChatRecipient } from "../../../localstorage-config";
 
 const useRefreshCurrentChatRecipient = (currentChatRecipient) => {
   const dispatch = useDispatch();
-  console.log("previousChatRecipient", previousChatRecipient);
+ // console.log("previousChatRecipient", previousChatRecipient);
   useEffect(() => {
     if (currentChatRecipient === null) {
       dispatch(addNewChatRecipient(previousChatRecipient));

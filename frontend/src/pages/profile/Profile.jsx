@@ -15,9 +15,9 @@ const Profile = () => {
   const { currentUser } = useSelector((state) => state.app);
   UseRefreshUser(currentUser);
 
-  console.log("currentUser", currentUser);
+ 
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [ setSelectedImage] = useState(null);
   const [imageURL, setImageURL] = useState(null);
 
   const handleFileChange = useCallback((event) => {
@@ -39,9 +39,9 @@ const Profile = () => {
 
       reader.readAsDataURL(file); // Read the file as a data URL
     }
-  }, []);
+  }, [setSelectedImage]);
 
-  console.log("selectedImage :", selectedImage, "imageURL", imageURL);
+  
 
   return (
     <Suspense fallback={<LoaderSpinner />}>

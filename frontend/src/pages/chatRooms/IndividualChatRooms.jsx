@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { GrSend } from "react-icons/gr";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import {
   useState,
   useMemo,
@@ -37,6 +38,7 @@ import useRefreshCurrentChatRecipient from "../controls/hooks/useRefreshCurrentC
 import LoaderSpinner from "../../components/LoaderSpinner";
 import { ErrorBoundary } from "react-error-boundary";
 import SignUpRedirect from "../error/SignUpRedirect";
+import EditMessage from "./components/EditMessage";
 
 const IndividualChatRoom = () => {
   const dispatch = useDispatch();
@@ -45,6 +47,10 @@ const IndividualChatRoom = () => {
   );
   UseRefreshUser(currentUser);
   useRefreshCurrentChatRecipient(currentChatRecipient);
+
+  const [messageToEdit, setMessageToEdit] = useState(null);
+
+  const [isEditingTabVisible, setEditingTabVisibility] = useState(false);
 
   const [newMessage, setNewMessage] = useState("");
   const textAreaRef = useRef(null);
@@ -62,9 +68,9 @@ const IndividualChatRoom = () => {
 
   const handleResize = useCallback(() => {
     // Your code to run when the window is resized
-    console.log("Window was resized!");
+    //console.log("Window was resized!");
     scrollToBottom();
-  }, []);
+  }, [scrollToBottom]);
 
   // Add a resize event listener when the component mounts
   useEffect(() => {
@@ -123,7 +129,7 @@ const IndividualChatRoom = () => {
         messageSendingCleanUp
       );
       scrollToBottom();
-      console.log(messageObj, "messageObj");
+      //console.log(messageObj, "messageObj");
     },
     [
       doccumentRef,
@@ -142,7 +148,7 @@ const IndividualChatRoom = () => {
 
   useEffect(() => {
     if (currentChat !== null) {
-      console.log("setting new currentChat");
+      //console.log("setting new currentChat");
       localStorage.setItem("current chat", currentChat);
       dispatch(addNewChat(currentChat));
     }
@@ -151,7 +157,7 @@ const IndividualChatRoom = () => {
     }
   }, [dispatch, currentChat, currentChatRecipient]);
 
-  console.log("doccuments :", doccument);
+  //console.log("doccuments :", doccument);
 
   useEffect(() => {
     if (currentChat !== null || currentChatRecipient !== null) {
@@ -169,7 +175,23 @@ const IndividualChatRoom = () => {
     doccument.length !== 0 && scrollToBottom();
   }, [doccument.length, scrollToBottom]);
 
-  console.log("currentChatRecipient", currentChatRecipient);
+  //console.log("currentChatRecipient", currentChatRecipient);
+
+  const handleEditTabOpen = (e) => {
+    setMessageToEdit(e.target.innerText);
+    setEditingTabVisibility(false);
+  //  console.log(e.target.innerText);
+  };
+
+  const handleEditTabClose = () => {
+    setMessageToEdit(null);
+    setEditingTabVisibility(false);
+  };
+
+  const handleEditingTabVisibility = () => {
+    setEditingTabVisibility((prev) => !prev);
+  };
+
   return (
     <div className=" backdrop-brightness-50 backdrop-blur-sm     relative max-h-screen h-screen overflow-hidden   ">
       <ErrorBoundary
@@ -182,7 +204,7 @@ const IndividualChatRoom = () => {
               ref={chatRef}
               className="bg-transparent  overflow-y-auto   h-full "
             >
-              <div className=" flex flex-col  backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
+              <div className=" flex flex-col z-20  backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
                 <div className="flex justify-start items-center ">
                   <Link to="/home">
                     <div className="px-1 ">
@@ -197,7 +219,7 @@ const IndividualChatRoom = () => {
                       className=" rounded-full w-[2.5rem]"
                     />
                     <div className="">
-                      {currentChatRecipient?.displayName}{" "}
+                      {currentChatRecipient?.displayName}
                       {currentChatRecipient?.isLogedIn && (
                         <p className="text-sm">Online</p>
                       )}
@@ -212,27 +234,49 @@ const IndividualChatRoom = () => {
                 {doccument?.map((message, index) => {
                   return (
                     <div
+                      onMouseLeave={handleEditTabClose}
                       key={index}
                       className={`" ${
                         auth.currentUser?.email === message.email
                           ? "justify-end "
                           : " justify-start"
-                      } flex items-start gap-4 px-3 "`}
+                      } flex items-start gap-4 px-3  relative "`}
                     >
-                      <div className="max-w-[70%] w-fit flex flex-col">
+                      <div className="max-w-[70%] w-fit flex flex-col ">
+                        {auth.currentUser?.email === message.email &&
+                          isEditingTabVisible &&
+                          messageToEdit === message.text && (
+                            <EditMessage
+                              collection="personal-conversations"
+                              message={message}
+                              handleEditTabClose={handleEditTabClose}
+                            />
+                          )}
                         <div
+                          onMouseEnter={handleEditTabOpen}
+                          //  onMouseLeave={handleEditTabClose}
                           className={`" ${
                             auth.currentUser?.email === message.email
                               ? "rounded-s-xl bg-blue-400 text-white"
                               : "rounded-e-xl bg-white/90  "
-                          }  p-3 rounded-t-xl  "`}
+                          }  p-3 rounded-t-xl  relative flex justify-center "`}
                         >
                           <p>{message.text}</p>
+
+                          {auth.currentUser?.email === message.email &&
+                            messageToEdit === message.text && (
+                              <div
+                                onClick={handleEditingTabVisibility}
+                                className=" translate-x-2 hover:bg-white/30 rounded flex items-center justify-center"
+                              >
+                                <BiDotsVerticalRounded />
+                              </div>
+                            )}
                         </div>
 
                         <Suspense fallback={<LoaderSpinner />}>
                           <p
-                            className={`" text-white py-2 text-[0.7rem] font-bold  ${
+                            className={`" text-white py-4 text-[0.7rem] font-bold  ${
                               auth.currentUser?.email === message.email
                                 ? "text-end"
                                 : ""
@@ -254,7 +298,6 @@ const IndividualChatRoom = () => {
               onSubmit={handleMessageSending}
             >
               <div className="bg-white/30  lg:w-[85%] flex   w-[80%]  rounded-xl backdrop-blur-xl">
-                {" "}
                 <TextareaAutosize
                   name="message"
                   id="message"

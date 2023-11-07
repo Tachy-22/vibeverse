@@ -28,7 +28,7 @@ const Nav = () => {
   const handleRoomAddOpen = useCallback(() => {
     setMenuDisplayArray((prev) => [!prev[0], false]);
   }, []);
-  console.log("userProfileImgURL", userProfileImgURL, user);
+ 
   return (
     <div className=" flex justify-between flex-col border-b bg-black">
       <div className="flex items-center  justify-between z-30 bg-black pt-[1rem] px-[1rem]">

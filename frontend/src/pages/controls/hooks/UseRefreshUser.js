@@ -8,10 +8,10 @@ const UseRefreshUser = (currentUser) => {
   useEffect(() => {
     if (currentUser === null) {
       dispatch(initiateCurrentUser(recentUser));
-      console.log("current user is :", currentUser);
+      //console.log("current user is :", currentUser);
     }
     if (currentUser !== null) {
-      console.log("recentUser", recentUser);
+     // console.log("recentUser", recentUser);
       localStorage.setItem("recent chat", serializedUser);
     }
   }, [currentUser, dispatch]);

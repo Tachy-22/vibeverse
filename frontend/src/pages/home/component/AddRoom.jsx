@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import UseRefreshUser from "../../controls/hooks/UseRefreshUser";
 
 const AddRoom = ({ handleMenuClose }) => {
-  const { room, rooms, currentUser, isModalVisible } = useSelector(
+  const { room, currentUser, isModalVisible } = useSelector(
     (state) => state.app
   );
   const dispatch = useDispatch();
@@ -37,11 +37,6 @@ const AddRoom = ({ handleMenuClose }) => {
     return doccument.map((obj) => obj.name?.trim().toLowerCase());
   }, [doccument]);
 
-  const updateRoomsCondition =
-    roomInputValue !== null &&
-    roomInputValue !== "" &&
-    !isRoomExisting(roomInputValue, roomNames);
-
   const previousRoom = useMemo(
     () =>
       localStorage.getItem("current room") === ""
@@ -52,7 +47,6 @@ const AddRoom = ({ handleMenuClose }) => {
 
   useEffect(() => {
     if (roomInputValue !== "" && roomInputValue) {
-      console.log("setting new room");
       localStorage.setItem("current room", roomInputValue);
     }
     if (roomInputValue === "") {
@@ -76,19 +70,9 @@ const AddRoom = ({ handleMenuClose }) => {
 
       try {
         //  dispatch(addNewRoom(roomInputValue));
-        console.log("NEW ROOM NAVIGATED TO", "previousRoom", room);
+        // console.log("NEW ROOM NAVIGATED TO", "previousRoom", room);
         roomInputValue !== "" && navigate(`/group/${room}`);
-        console.log(
-          "updateRoomsCondition",
-          updateRoomsCondition,
-          roomInputValue !== "",
-          roomNames,
-          "  isRoomExisting(roomInputValue, roomNames),",
-          !isRoomExisting(roomInputValue, roomNames),
-          " roomInputValue & !isRoomExisting(roomInputValue, roomNames)",
-          roomInputValue !== "" && !isRoomExisting(roomInputValue, roomNames),
-          currentUser?.user
-        );
+
         if (
           roomInputValue !== "" &&
           !isRoomExisting(roomInputValue, roomNames)
@@ -100,7 +84,7 @@ const AddRoom = ({ handleMenuClose }) => {
           await addDoc(doccumentRef, messageObj);
           // console.log(room, currentUser.user);
           dispatch(updateRooms(doccument));
-          console.log("NEW ROOM ADDED", ", previousRoom", previousRoom);
+          // console.log("NEW ROOM ADDED", ", previousRoom", previousRoom);
         } else {
           return;
         }
@@ -111,28 +95,17 @@ const AddRoom = ({ handleMenuClose }) => {
     [
       room,
       navigate,
-      updateRoomsCondition,
       roomInputValue,
       roomNames,
-      currentUser?.user,
+      currentUser.user,
       doccumentRef,
       dispatch,
       doccument,
-      previousRoom,
     ]
   );
-  console.log(
-    "rooms",
-    rooms,
-    roomNames
-    // isRoomExisting(newRoom, roomNames)
-  );
-
-  console.log("dispatched room ", room);
 
   const handleRoomAddition = () => {
     if (room === "") {
-      console.log("setting new room");
       localStorage.setItem("current room", room);
     }
     if (roomInputValue === "") {
@@ -141,7 +114,7 @@ const AddRoom = ({ handleMenuClose }) => {
     }
     !isModalVisible && handleMenuClose();
   };
-  console.log("room input:", roomInputValue);
+
   return (
     <form
       action=""

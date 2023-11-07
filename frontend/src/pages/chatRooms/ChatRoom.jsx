@@ -23,6 +23,8 @@ import UseRefreshUser from "../controls/hooks/UseRefreshUser";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import { ErrorBoundary } from "react-error-boundary";
 import SignUpRedirect from "../error/SignUpRedirect";
+import EditMessage from "./components/EditMessage";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const ChatRoom = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,9 @@ const ChatRoom = () => {
   } = useSelector((state) => state.app);
   UseRefreshUser(currentUser);
 
+  const [messageToEdit, setMessageToEdit] = useState(null);
+
+  const [isEditingTabVisible, setEditingTabVisibility] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const textAreaRef = useRef(null);
 
@@ -100,6 +105,21 @@ const ChatRoom = () => {
   }, [dispatch, previousRoom, room]);
   console.log("doccuments :", doccument);
 
+  const handleEditTabOpen = (e) => {
+    setMessageToEdit(e.target.innerText);
+    setEditingTabVisibility(false);
+    console.log(e.target.innerText);
+  };
+
+  const handleEditTabClose = () => {
+    setMessageToEdit(null);
+    setEditingTabVisibility(false);
+  };
+
+  const handleEditingTabVisibility = () => {
+    setEditingTabVisibility((prev) => !prev);
+  };
+
   return (
     <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
       {currentUser ? (
@@ -121,12 +141,13 @@ const ChatRoom = () => {
                 {doccument.map((message, index) => {
                   return (
                     <div
+                      onMouseLeave={handleEditTabClose}
                       key={index}
                       className={`" ${
                         auth.currentUser.email === message.email
                           ? "justify-end "
                           : " justify-start"
-                      } flex items-start gap-4 px-3 "`}
+                      } flex items-start gap-4 px-3 relative "`}
                     >
                       <div className=" ">
                         {auth.currentUser.email !== message.email && (
@@ -138,14 +159,33 @@ const ChatRoom = () => {
                         )}
                       </div>
                       <div className="max-w-[70%] w-fit flex flex-col">
+                        {auth.currentUser?.email === message.email &&
+                          isEditingTabVisible &&
+                          messageToEdit === message.text && (
+                            <EditMessage
+                              collection="room-conversations"
+                              message={message}
+                              handleEditTabClose={handleEditTabClose}
+                            />
+                          )}
                         <div
+                          onMouseEnter={handleEditTabOpen}
                           className={`" ${
                             auth.currentUser.email === message.email
                               ? "rounded-s-xl bg-blue-400 text-white"
                               : "rounded-e-xl bg-white/90  "
-                          }  p-3 rounded-t-xl  "`}
+                          }  p-3 rounded-t-xl  relative flex justify-center "`}
                         >
                           <p>{message.text}</p>
+                          {auth.currentUser?.email === message.email &&
+                            messageToEdit === message.text && (
+                              <div
+                                onClick={handleEditingTabVisibility}
+                                className=" translate-x-2 hover:bg-white/30 rounded flex items-center justify-center"
+                              >
+                                <BiDotsVerticalRounded />
+                              </div>
+                            )}
                         </div>
                         <p
                           className={`" text-gray-300 py-2 text-[0.7rem]  ${

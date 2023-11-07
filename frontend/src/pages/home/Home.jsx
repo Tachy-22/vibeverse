@@ -38,14 +38,14 @@ const Home = () => {
     [currentUser, users]
   );
 
-  console.log(
-    "users",
-    users,
-    "current user",
-    currentUser,
-    "updatedCurrentUser",
-    { ...currentUser, id: updatedCurrentUser[0]?.id }
-  );
+  // console.log(
+  //   "users",
+  //   users,
+  //   "current user",
+  //   currentUser,
+  //   "updatedCurrentUser",
+  //   { ...currentUser, id: updatedCurrentUser[0]?.id }
+  // );
 
   useEffect(() => {
     if (currentUser.id) {
