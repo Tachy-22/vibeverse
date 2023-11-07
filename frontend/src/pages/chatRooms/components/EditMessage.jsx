@@ -45,12 +45,12 @@ const EditMessage = ({ collection, message }) => {
             name="message"
             id="message"
             type="text"
-            className="w-[10rem] border border-emerald-950 p-1  rounded"
+            className="w-full border border-emerald-950 p-1  rounded"
             onBlur={handleEditClick}
             maxRows={3}
             minRows={1}
           />
-          <button className="button w-full">
+          <button className="button w-fit">
             <span className="button-content">
               <AiOutlineCheck />{" "}
             </span>{" "}
