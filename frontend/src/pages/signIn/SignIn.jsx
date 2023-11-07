@@ -27,7 +27,7 @@ const SignIn = () => {
     setIsAuth(undefined);
   }, []);
 
-  console.log("cookie", cookies.get("auth-token"));
+ // console.log("cookie", cookies.get("auth-token"));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,13 +41,13 @@ const SignIn = () => {
   const users = useMemo(() => {
     return doccument.map((obj) => obj.user);
   }, [doccument]);
-  console.log("users", users, isAuth);
+ // console.log("users", users, isAuth);
 
   const handleGoogleSignIn = async () => {
-    console.log("Sign in Clicked", isAuth);
+    //console.log("Sign in Clicked", isAuth);
     try {
       if (!isAuth) {
-        console.log("Sign in Clicked", isAuth);
+      //  console.log("Sign in Clicked", isAuth);
         const signInData = await signInWithGoogle(
           setIsAuth,
           doccumentRef,

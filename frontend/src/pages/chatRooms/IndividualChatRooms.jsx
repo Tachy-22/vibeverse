@@ -180,7 +180,7 @@ const IndividualChatRoom = () => {
   const handleEditTabOpen = (e) => {
     setMessageToEdit(e.target.innerText);
     setEditingTabVisibility(false);
-  //  console.log(e.target.innerText);
+    //  console.log(e.target.innerText);
   };
 
   const handleEditTabClose = () => {
@@ -253,7 +253,7 @@ const IndividualChatRoom = () => {
                             />
                           )}
                         <div
-                          onMouseEnter={handleEditTabOpen}
+                          onDoubleClick={handleEditTabOpen}
                           //  onMouseLeave={handleEditTabClose}
                           className={`" ${
                             auth.currentUser?.email === message.email
