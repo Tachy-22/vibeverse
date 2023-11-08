@@ -17,7 +17,7 @@ const Profile = () => {
 
  
 
-  const [ setSelectedImage] = useState(null);
+  const [base64EncodedUrl, setSelectedImage] = useState(null);
   const [imageURL, setImageURL] = useState(null);
 
   const handleFileChange = useCallback((event) => {
@@ -88,7 +88,7 @@ const Profile = () => {
                   <p className="">{currentUser.user.email}</p>
                 </div>
               </div>
-              <div className="border-t flex flex-col py-4 gap-2">
+              {/* <div className="border-t flex flex-col py-4 gap-2">
                 <h2 className="">Phone number:</h2>
                 <div className="flex gap-3 items-center">
                   <div className=" bg-black/50 p-2 text-xl rounded-full">
@@ -97,7 +97,7 @@ const Profile = () => {
 
                   <p className="">{currentUser.user.createdAt}</p>
                 </div>
-              </div>
+              </div> */}
               <div className="border-t flex flex-col py-4 gap-2">
                 <a href="/" className="flex gap-3 justify-end items-center  ">
                   <button

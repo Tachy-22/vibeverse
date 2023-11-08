@@ -4,7 +4,12 @@ import signInWithGoogle from "./controls/functions/SignInWithGoogle";
 import { FaGoogle } from "react-icons/fa";
 import { PiSignatureThin } from "react-icons/pi";
 //import HomeBg from "../../assets/homeBg3.jpg";
-import { initiateCurrentUser, updateUsers } from "../../redux/slice";
+import {
+  initiateCurrentUser,
+  updateModalMessage,
+  updateModalVisibility,
+  updateUsers,
+} from "../../redux/slice";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -20,6 +25,7 @@ import { cookies } from "../../cookies-config";
 import { clearLocaltorage } from "../chatRooms/controls/functions";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import { useState } from "react";
+import { useCallback } from "react";
 
 const SignIn = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
@@ -27,7 +33,7 @@ const SignIn = () => {
     setIsAuth(undefined);
   }, []);
 
- // console.log("cookie", cookies.get("auth-token"));
+  // //console.log("cookie", cookies.get("auth-token"));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,13 +47,13 @@ const SignIn = () => {
   const users = useMemo(() => {
     return doccument.map((obj) => obj.user);
   }, [doccument]);
- // console.log("users", users, isAuth);
+  // //console.log("users", users, isAuth);
 
   const handleGoogleSignIn = async () => {
-    //console.log("Sign in Clicked", isAuth);
+    ////console.log("Sign in Clicked", isAuth);
     try {
       if (!isAuth) {
-      //  console.log("Sign in Clicked", isAuth);
+        //  //console.log("Sign in Clicked", isAuth);
         const signInData = await signInWithGoogle(
           setIsAuth,
           doccumentRef,
@@ -66,8 +72,6 @@ const SignIn = () => {
     }
   };
 
-  
-
   useEffect(() => {
     cookies.remove("auth-token");
     clearLocaltorage();
@@ -76,7 +80,16 @@ const SignIn = () => {
     currentUser && isAuth && navigate("/home");
   }, [currentUser, isAuth, navigate]);
 
-  console.log("all users", doccument);
+  //console.log("all users", doccument);
+
+  const handleInvalidSignIn = useCallback(() => {
+    dispatch(updateModalVisibility(true)) &&
+      dispatch(
+        updateModalMessage(
+          "Kindly Sign in with Google as email/password logins are not currently supported !"
+        )
+      );
+  }, [dispatch]);
   return (
     <div className=" bg-signUp bg-cover bg-center w-full flex justify-center text-white items-center h-full ">
       {users.length === 0 ? (
@@ -140,7 +153,7 @@ const SignIn = () => {
                     Remember me
                   </label>
                 </div>
-                <div>
+                <div onClick={handleInvalidSignIn}>
                   <button className="p-1 text-white rounded-sm bg-blue-600 hover:bg-blue-500">
                     Sign in
                   </button>

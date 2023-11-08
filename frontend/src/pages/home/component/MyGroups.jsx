@@ -10,7 +10,7 @@ const MyGroups = () => {
 
   const roomRef = useRef();
   const myGroupRooms = rooms.filter(
-    (room) => room.createdBy === currentUser.user.displayName
+    (room) => room.createdBy === currentUser.user.email
   );
 
   console.log("roomRef", roomRef);
@@ -24,7 +24,7 @@ const MyGroups = () => {
               setIsClicked(true);
               setRoomName(e.target.innerText);
             }}
-            className=" bg-white/30 backdrop-blur-3xl p-1 rounded hover:bg-white hover:cursor-pointer "
+            className="capitalize bg-white/30 backdrop-blur-3xl p-1 rounded hover:bg-white hover:cursor-pointer "
             key={index}
           >
             {room.name}

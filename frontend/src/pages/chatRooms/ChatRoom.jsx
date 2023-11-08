@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { GrSend } from "react-icons/gr";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { AiTwotoneDelete } from "react-icons/ai";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
   // addDoc,
@@ -15,7 +16,7 @@ import { formatTimestamp } from "./controls/functions";
 import UseGetDoccument from "../controls/hooks/UseGetDoccument";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewRoom } from "../../redux/slice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextareaAutosize from "react-textarea-autosize";
 
 import { handleDoccumentAddition } from "../controls/functions/handleDoccumentAddition";
@@ -25,9 +26,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import SignUpRedirect from "../error/SignUpRedirect";
 import EditMessage from "./components/EditMessage";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import handleDeleteDoccument from "../controls/functions/handleDeleteDoccument";
 
 const ChatRoom = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     room,
     currentUser,
@@ -36,7 +39,7 @@ const ChatRoom = () => {
   UseRefreshUser(currentUser);
 
   const [messageToEdit, setMessageToEdit] = useState(null);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditingTabVisible, setEditingTabVisibility] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const textAreaRef = useRef(null);
@@ -64,7 +67,7 @@ const ChatRoom = () => {
     setNewMessage("");
   }, []);
 
-  const queryParams = useMemo(
+  const chatRoomMessagesQueryParams = useMemo(
     () =>
       query(doccumentRef, where("newRoom", "==", room), orderBy("createdAt")),
     [doccumentRef, room]
@@ -88,7 +91,7 @@ const ChatRoom = () => {
     setNewMessage(textAreaRef.current.value);
   }, []);
 
-  const [doccument] = UseGetDoccument(queryParams);
+  const [chatRoomMessages] = UseGetDoccument(chatRoomMessagesQueryParams);
   const previousRoom = useMemo(
     () => (room === "" ? localStorage.getItem("current room") : room),
     [room]
@@ -120,10 +123,36 @@ const ChatRoom = () => {
     setEditingTabVisibility((prev) => !prev);
   };
 
+  const roomRef = useMemo(() => collection(db, "rooms"), []);
+
+  const roomDataqueryParams = useMemo(
+    () => query(roomRef, where("name", "==", room.toLowerCase())),
+    [roomRef, room]
+  );
+
+  const [roomDataDoc] = UseGetDoccument(roomDataqueryParams);
+
+  const handleRoomDelete = useCallback(() => {
+    handleDeleteDoccument("rooms", roomDataDoc[0].id);
+    navigate("/home/");
+  }, [navigate, roomDataDoc]);
+
+  console.log(roomDataDoc);
   return (
     <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
       {currentUser ? (
         <div className=" backdrop-brightness-50 backdrop-blur-sm  relative h-screen overflow-hidden  ">
+          {isMenuOpen && (
+            <div
+              onClick={handleRoomDelete}
+              className=" flex absolute items-center top-0 gap-2 right-0 mt-[2.7rem] mr-1 rounded-md z-40  backdrop-blur-3xl p-3"
+            >
+              <p className="">Delete room</p>
+              <div className="">
+                <AiTwotoneDelete className="text-xl hover:bg-red-400 hover:text-white text-red-400  rounded" />
+              </div>
+            </div>
+          )}
           <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto ">
             <div className="bg-transparent   overflow-y-scroll  h-full ">
               <div className=" flex justify-start backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
@@ -136,21 +165,31 @@ const ChatRoom = () => {
                 <div className="w-full justify-center flex">
                   <h2 className="">{room.toUpperCase()}</h2>
                 </div>
+                {currentUser.user.email === roomDataDoc[0]?.createdBy && (
+                  <div
+                    onClick={() => {
+                      setIsMenuOpen((prev) => !prev);
+                    }}
+                    className="px-2 hover:bg-white/30 rounded flex items-center justify-center"
+                  >
+                    <BiDotsVerticalRounded />
+                  </div>
+                )}
               </div>
               <div className="h-max  py-2  px-[0.5rem] mb-[8rem] ">
-                {doccument.map((message, index) => {
+                {chatRoomMessages.map((message, index) => {
                   return (
                     <div
                       onMouseLeave={handleEditTabClose}
                       key={index}
                       className={`" ${
-                        auth.currentUser.email === message.email
+                        currentUser.user.email === message.email
                           ? "justify-end "
                           : " justify-start"
                       } flex items-start gap-4 px-3 relative "`}
                     >
                       <div className=" ">
-                        {auth.currentUser.email !== message.email && (
+                        {currentUser.user.email !== message.email && (
                           <img
                             src={message.userUrl}
                             alt=""
@@ -159,7 +198,7 @@ const ChatRoom = () => {
                         )}
                       </div>
                       <div className="max-w-[70%] w-fit flex flex-col">
-                        {auth.currentUser?.email === message.email &&
+                        {currentUser.user?.email === message.email &&
                           isEditingTabVisible &&
                           messageToEdit === message.text && (
                             <EditMessage
@@ -171,13 +210,13 @@ const ChatRoom = () => {
                         <div
                           onMouseEnter={handleEditTabOpen}
                           className={`" ${
-                            auth.currentUser.email === message.email
+                            currentUser.user.email === message.email
                               ? "rounded-s-xl bg-blue-400 text-white"
                               : "rounded-e-xl bg-white/90  "
                           }  p-3 rounded-t-xl  relative flex justify-center "`}
                         >
                           <p>{message.text}</p>
-                          {auth.currentUser?.email === message.email &&
+                          {currentUser.user?.email === message.email &&
                             messageToEdit === message.text && (
                               <div
                                 onClick={handleEditingTabVisibility}
@@ -188,8 +227,8 @@ const ChatRoom = () => {
                             )}
                         </div>
                         <p
-                          className={`" text-gray-300 py-2 text-[0.7rem]  ${
-                            auth.currentUser.email === message.email
+                          className={`" text-gray-500 py-2 text-[0.7rem]  ${
+                            currentUser.user.email === message.email
                               ? "text-end"
                               : ""
                           }  "`}

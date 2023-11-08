@@ -95,18 +95,6 @@ const Home = () => {
                   activeClassName="bg-white"
                   className={({ isActive }) =>
                     isActive
-                      ? " rounded-xl text-center bg-white  flex justify-center items-center px-2 p-1 w-full"
-                      : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
-                  }
-                >
-                  All
-                </NavLink>
-
-                <NavLink
-                  to="/home/my-Groups"
-                  activeClassName="bg-white"
-                  className={({ isActive }) =>
-                    isActive
                       ? " rounded-xl text-center bg-white  px-2 p-1 w-full"
                       : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
                   }
@@ -114,6 +102,18 @@ const Home = () => {
                   My groups
                 </NavLink>
                 <NavLink
+                  to="/home/all"
+                  activeClassName="bg-white"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " rounded-xl text-center bg-white  flex justify-center items-center px-2 p-1 w-full"
+                      : " bg-black/70 px-2 p-1 w-full rounded-xl text-white text-center"
+                  }
+                >
+                  All
+                </NavLink>
+
+                {/* <NavLink
                   activeClassName="bg-white"
                   to="/home/chats"
                   className={({ isActive }) =>
@@ -123,9 +123,9 @@ const Home = () => {
                   }
                 >
                   Chats
-                </NavLink>
+                </NavLink> */}
               </nav>
-              <section className=" backdrop-brightness-0  overflow-y-scroll flex flex-col flex-grow h-full letters-bg w-full  border-yellow-500  ">
+              <section className=" backdrop-brightness-0  overflow-y-auto flex flex-col flex-grow h-full letters-bg w-full  border-yellow-500  ">
                 <Outlet />
               </section>
             </div>

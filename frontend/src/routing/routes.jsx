@@ -42,7 +42,7 @@ export const routes = [
         errorElement: <ErrorPage />,
         children: [
           {
-            path: "/home/",
+            path: "/home/all",
             element: <AllGroups />,
           },
           {
@@ -50,7 +50,7 @@ export const routes = [
             element: <Chats />,
           },
           {
-            path: "/home/my-groups",
+            path: "/home/",
             element: <MyGroups />,
           },
         ],

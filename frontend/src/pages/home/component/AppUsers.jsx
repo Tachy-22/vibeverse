@@ -40,7 +40,7 @@ const AppUsers = () => {
 
   return (
     <div className="  flex flex-col    px-4 pt-4 text-white/70">
-      <h2>Current users:</h2>
+      <h2>Chats:</h2>
       <div className="overflow-x-auto ">
         <Suspense
           fallback={

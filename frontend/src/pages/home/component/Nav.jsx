@@ -87,7 +87,7 @@ const Nav = () => {
       </div>
       <Link
         to="/about"
-        className=" absolute bottom-0 text-white bg-black/40 m-4 right-0  rounded-full h-[4rem]  w-[4rem] scale-[80%] flex justify-center h-fit p-1 items-center hover:bg-white hover:text-black "
+        className=" absolute bottom-0 text-white bg-black/40 m-1 mb-[5rem] right-0  rounded-full h-[4rem]  min-w-[4rem] scale-[80%] flex justify-center  p-1 items-center hover:bg-white hover:text-black "
       >
         About
       </Link>

@@ -50,7 +50,6 @@ const AddRoom = ({ handleMenuClose }) => {
       localStorage.setItem("current room", roomInputValue);
     }
     if (roomInputValue === "") {
-     
       previousRoom !== null && dispatch(addNewRoom(previousRoom));
     }
   }, [dispatch, previousRoom, room, roomInputValue]);
@@ -79,8 +78,8 @@ const AddRoom = ({ handleMenuClose }) => {
           !isRoomExisting(roomInputValue, roomNames)
         ) {
           const messageObj = {
-            name: room,
-            createdBy: currentUser.user?.displayName,
+            name: room.toLowerCase(),
+            createdBy: currentUser.user?.email,
           };
           await addDoc(doccumentRef, messageObj);
           // console.log(room, currentUser.user);
@@ -122,12 +121,12 @@ const AddRoom = ({ handleMenuClose }) => {
       className=" flex flex-col bg-orange-100/40 backdrop-blur-md h-fit p-2"
       onSubmit={handleRoomNavigation}
     >
-      <p className="text-sm text-black">Create a new room ?</p>
+      <p className="text-sm text-black py-2">Create a new room ?</p>
       <div className=" w-full items-center    text-black gap-2 flex justify-between">
         <input
           ref={roomRef}
           type="text"
-          className=" border border-black h-fit w-full rounded-md"
+          className=" border border-black h-fit w-full rounded-md px-2 p-1"
         />
 
         <button

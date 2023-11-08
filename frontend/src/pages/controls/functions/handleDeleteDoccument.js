@@ -3,7 +3,7 @@ import { db } from "../../../firebase-config";
 
 const handleDeleteDoccument = async (collectionName, docId) => {
   await deleteDoc(doc(db, `${collectionName}`, `${docId}`));
-  console.log("mesage deleted");
+  console.log("docc deleted");
   return;
 };
 
