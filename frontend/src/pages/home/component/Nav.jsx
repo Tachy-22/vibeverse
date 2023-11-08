@@ -34,27 +34,23 @@ const Nav = () => {
 
   return (
     <div className=" flex justify-between flex-col border-b bg-black">
-      <div className="flex items-center  justify-between z-30 bg-black pt-[1rem] px-[1rem]">
-        <Link className=" relative" to="/profile">
-          <img
-            src={userProfileImgURL}
-            alt=""
-            className=" w-[3rem] h-[3rem] rounded-full "
-          />
-          {
-            <span className="w-2 h-2 bg-green-500 rounded-full absolute right-[3px] bottom-[1px]"></span>
-          }
+      <div className="flex items-center  justify-evenly z-30 bg-black pt-[1rem] px-[1rem]">
+        <Link className=" flex  relative" to="/profile">
+          <div className="relative">
+            <img
+              src={userProfileImgURL}
+              alt=""
+              className=" w-[3rem] h-[3rem] rounded-full "
+            />
+            {
+              <span className="w-2 h-2 bg-green-500 rounded-full absolute right-[3px] bottom-[1px]"></span>
+            }
+          </div>
         </Link>
-        <div className=" border bg-white/20  flex justify-center items-center rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit pl-[0.7rem] py-[0.25rem] pb-[0.4rem] pr-[0.5rem] hover:scale-[105%] ">
+        <div className="  -translate-y-4  flex justify-center items-center rounded-s-[2rem] mx-auto  rounded-e-[2rem] w-fit pl-[0.7rem] py-[0.25rem] pb-[0.4rem] pr-[0.5rem]  ">
           <LogoMobile />
         </div>
         <div className="flex gap-2 items-center">
-          <Link
-            to="/about"
-            className="  rounded-lg flex justify-center h-fit p-1 items-center hover:text-orange-300 hover:underline "
-          >
-            About
-          </Link>
           <div
             onClick={handleRoomAddOpen}
             className={`${
@@ -89,6 +85,12 @@ const Nav = () => {
           />
         </div>
       </div>
+      <Link
+        to="/about"
+        className=" absolute bottom-0 text-white bg-black/40 m-4 right-0  rounded-full h-[4rem]  w-[4rem] scale-[80%] flex justify-center h-fit p-1 items-center hover:bg-white hover:text-black "
+      >
+        About
+      </Link>
     </div>
   );
 };
