@@ -79,7 +79,7 @@ const ChatRoom = () => {
         messageAdditionContion,
         messageSendingCleanUp
       );
-      console.log(messageObj, "messageObj");
+      ////console.log(messageObj, "messageObj");
     },
     [doccumentRef, messageAdditionContion, messageObj, messageSendingCleanUp]
   );
@@ -96,19 +96,19 @@ const ChatRoom = () => {
 
   useEffect(() => {
     if (room !== "") {
-      console.log("setting new room");
+      //console.log("setting new room");
       localStorage.setItem("current room", room);
     }
     if (room === "") {
       dispatch(addNewRoom(previousRoom));
     }
   }, [dispatch, previousRoom, room]);
-  console.log("doccuments :", doccument);
+  //console.log("doccuments :", doccument);
 
   const handleEditTabOpen = (e) => {
     setMessageToEdit(e.target.innerText);
     setEditingTabVisibility(false);
-    console.log(e.target.innerText);
+    //console.log(e.target.innerText);
   };
 
   const handleEditTabClose = () => {

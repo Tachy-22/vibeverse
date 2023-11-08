@@ -253,7 +253,7 @@ const IndividualChatRoom = () => {
                             />
                           )}
                         <div
-                          onDoubleClick={handleEditTabOpen}
+                          onMouseEnter={handleEditTabOpen}
                           //  onMouseLeave={handleEditTabClose}
                           className={`" ${
                             auth.currentUser?.email === message.email

@@ -77,11 +77,11 @@ const Profile = () => {
           </div>
 
           <Suspense fallback={<LoaderSpinner />}>
-            <div className="bg-profile border-t-[2px] bg-cover bg-center bg-gray-400 px-3 h-max flex-grow pt-[7rem] border-blue-300  ">
+            <div className="bg-profile border-t-[2px] bg-cover bg-center bg-black/70 px-3 h-max flex-grow pt-[7rem] border-blue-300  ">
               <div className="border-t flex flex-col py-4 gap-2">
                 <h2 className="">Email:</h2>
                 <div className="flex gap-3 items-center">
-                  <div className=" bg-gray-700 p-2 text-xl rounded-full">
+                  <div className=" bg-black/50 p-2 text-xl rounded-full">
                     <AiOutlineMail />
                   </div>
 
@@ -91,7 +91,7 @@ const Profile = () => {
               <div className="border-t flex flex-col py-4 gap-2">
                 <h2 className="">Phone number:</h2>
                 <div className="flex gap-3 items-center">
-                  <div className=" bg-gray-700 p-2 text-xl rounded-full">
+                  <div className=" bg-black/50 p-2 text-xl rounded-full">
                     <BiPhoneCall />
                   </div>
 

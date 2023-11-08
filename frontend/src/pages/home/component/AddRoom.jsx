@@ -8,8 +8,8 @@ import { isRoomExisting } from "../../controls/functions/isRoomExisting";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addNewRoom,
-  updateModalMessage,
-  updateModalVisibility,
+  // updateModalMessage,
+  // updateModalVisibility,
   updateRooms,
 } from "../../../redux/slice";
 //import { Link } from "react-router-dom";
@@ -50,6 +50,7 @@ const AddRoom = ({ handleMenuClose }) => {
       localStorage.setItem("current room", roomInputValue);
     }
     if (roomInputValue === "") {
+     
       previousRoom !== null && dispatch(addNewRoom(previousRoom));
     }
   }, [dispatch, previousRoom, room, roomInputValue]);
@@ -108,26 +109,37 @@ const AddRoom = ({ handleMenuClose }) => {
     if (room === "") {
       localStorage.setItem("current room", room);
     }
-    if (roomInputValue === "") {
-      dispatch(updateModalVisibility(true)) &&
-        dispatch(updateModalMessage("Enter a valid room !"));
-    }
+    // if (roomInputValue === "") {
+    //   dispatch(updateModalVisibility(true)) &&
+    //     dispatch(updateModalMessage("Enter a valid room !"));
+    // }
     !isModalVisible && handleMenuClose();
   };
 
   return (
     <form
       action=""
-      className=" w-full bg-orange-100/40 backdrop-blur-md h-[10rem] p-1 text-black "
+      className=" flex flex-col bg-orange-100/40 backdrop-blur-md h-fit p-2"
       onSubmit={handleRoomNavigation}
     >
-      <input ref={roomRef} type="text" className=" border" />
+      <p className="text-sm text-black">Create a new room ?</p>
+      <div className=" w-full items-center    text-black gap-2 flex justify-between">
+        <input
+          ref={roomRef}
+          type="text"
+          className=" border border-black h-fit w-full rounded-md"
+        />
 
-      <button className="button" onClick={handleRoomAddition}>
-        <span className="button-content">Add room </span>
-      </button>
-
-      <p className="">Previous room: {room}</p>
+        <button
+          className="button flex w-max justify-center items-center flex-grow"
+          onClick={handleRoomAddition}
+        >
+          <span className="button-content w-max flex-grow flex justify-center ">
+            create{" "}
+          </span>
+        </button>
+      </div>
+      {/* <p className="">Previous room: {room}</p> */}
     </form>
   );
 };

@@ -1,4 +1,5 @@
 import App from "../App";
+import About from "../pages/about/About";
 import ChatRoom from "../pages/chatRooms/ChatRoom";
 import IndividualChatRoom from "../pages/chatRooms/IndividualChatRooms";
 import ErrorPage from "../pages/error/Error";
@@ -28,6 +29,11 @@ export const routes = [
       {
         path: "/profile",
         element: <Profile />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "/about",
+        element: <About />,
         errorElement: <ErrorPage />,
       },
       {

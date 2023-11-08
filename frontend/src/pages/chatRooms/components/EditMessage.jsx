@@ -7,6 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 const EditMessage = ({ collection, message }) => {
   const [isInputOpen, setInputOpen] = useState(false);
+  const [textAreaInput, setTextAreaInput] = useState(message.text);
 
   const handleDeleteClick = useCallback(async () => {
     handleDeleteDoccument(collection, message.id);
@@ -23,7 +24,6 @@ const EditMessage = ({ collection, message }) => {
     setInputOpen(true);
   };
   return (
-
     <div
       // onMouseLeave={handleEditTabClose}
       className="w-max text-gray-500 right-[0rem] flex flex-col rounded absolute -bottom-[1rem] z-10 justify-end h-max  bg-white/90  p-1 "
@@ -45,10 +45,14 @@ const EditMessage = ({ collection, message }) => {
             name="message"
             id="message"
             type="text"
+            value={textAreaInput}
             className="w-full border border-emerald-950 p-1  rounded"
             onBlur={handleEditClick}
             maxRows={3}
             minRows={1}
+            onChange={(e) => {
+              setTextAreaInput(e.target.value);
+            }}
           />
           <button className="button w-fit">
             <span className="button-content">

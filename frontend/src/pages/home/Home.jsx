@@ -27,6 +27,7 @@ const Home = () => {
   const { currentUser, currentChat, users } = useSelector((state) => state.app);
   UseRefreshUser(currentUser);
   useRefreshChat(currentChat);
+  localStorage.setItem("current room", "general");
 
   useEffect(() => {
     dispatch(updateUsers(doccument));
