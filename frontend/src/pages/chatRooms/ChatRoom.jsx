@@ -142,18 +142,18 @@ const ChatRoom = () => {
     <ErrorBoundary FallbackComponent={<LoaderSpinner />}>
       {currentUser ? (
         <div className=" backdrop-brightness-50 backdrop-blur-sm  relative h-screen overflow-hidden  ">
-          {isMenuOpen && (
-            <div
-              onClick={handleRoomDelete}
-              className=" flex absolute items-center top-0 gap-2 right-0 mt-[2.7rem] mr-1 rounded-md z-40  backdrop-blur-3xl p-3"
-            >
-              <p className="">Delete room</p>
-              <div className="">
-                <AiTwotoneDelete className="text-xl hover:bg-red-400 hover:text-white text-red-400  rounded" />
-              </div>
-            </div>
-          )}
           <div className=" h-full  letters-bg  overflow-hidden  w-full relative xl:w-[40rem] lg:w-1/2 md:w-[90%] mx-auto ">
+            {isMenuOpen && (
+              <div
+                onClick={handleRoomDelete}
+                className=" flex absolute items-center top-0 gap-2 right-0 mt-[2.7rem] mr-1 rounded-md z-40  backdrop-blur-3xl p-3"
+              >
+                <p className="">Delete room</p>
+                <div className="">
+                  <AiTwotoneDelete className="text-xl hover:bg-red-400 hover:text-white text-red-400  rounded" />
+                </div>
+              </div>
+            )}
             <div className="bg-transparent   overflow-y-scroll  h-full ">
               <div className=" flex justify-start backdrop-blur-3xl w-full border-b border-black/10 bg-orange-100   sticky top-0 py-2">
                 <Link to="/home">

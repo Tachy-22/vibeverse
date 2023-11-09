@@ -11,7 +11,7 @@ const UseHandleGroupNavigation = (room, isClicked) => {
 
   const handleGroupNav = useCallback(() => {
     dispatch(addNewRoom(roomName));
-    navigate(`/group/${roomName.toLowercase()}`);
+    navigate(`/group/${roomName}`);
   }, [dispatch, navigate, roomName]);
 
   isClicked && handleGroupNav();

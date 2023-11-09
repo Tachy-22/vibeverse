@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import UseHandleGroupNavigation from "../controls/UseHandleGroupNavigation";
+import { Link } from "react-router-dom";
 
 const MyGroups = () => {
   const { rooms, currentUser, room } = useSelector((state) => state.app);
@@ -27,10 +28,18 @@ const MyGroups = () => {
             className="capitalize bg-white/30 backdrop-blur-3xl p-1 rounded hover:bg-white hover:cursor-pointer "
             key={index}
           >
-            {room.name} 
+            {room.name}
           </div>
         );
       })}
+      {myGroupRooms.length === 0 && (
+        <div>
+          You have not created any groups?, create or browse through the available ones in  one in{" "}
+          <Link to="/home/all" className=" hover:text-blue-700 underline">
+            All
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
