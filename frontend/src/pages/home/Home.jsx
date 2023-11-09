@@ -125,7 +125,7 @@ const Home = () => {
                   Chats
                 </NavLink> */}
               </nav>
-              <section className=" backdrop-brightness-0  overflow-y-auto flex flex-col flex-grow h-full letters-bg w-full  border-yellow-500  ">
+              <section className=" backdrop-brightness-0   overflow-y-auto flex flex-col flex-grow h-full letters-bg w-full  border-yellow-500 bg-repeat-0 bg-cover ">
                 <Outlet />
               </section>
             </div>
