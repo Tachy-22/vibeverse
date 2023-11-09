@@ -5,8 +5,8 @@ import { useState } from "react";
 const AllGroups = () => {
   const { rooms, room } = useSelector((state) => state.app);
   const [isClicked, setIsClicked] = useState(false);
-  const [ setRoomName] = UseHandleGroupNavigation(room, isClicked);
-  
+  const [setRoomName] = UseHandleGroupNavigation(room, isClicked);
+
   return (
     <div className=" p-5 gap-[0.5rem] flex flex-col ">
       {" "}
@@ -17,10 +17,10 @@ const AllGroups = () => {
               setIsClicked(true);
               setRoomName(e.target.innerText);
             }}
-            className=" bg-white/30 p-1 backdrop-blur-3xl  rounded hover:bg-white hover:cursor-pointer "
+            className="capitalize bg-white/30 backdrop-blur-3xl p-1 rounded hover:bg-white hover:cursor-pointer "
             key={index}
           >
-            {room.name}
+            {room.name} 
           </div>
         );
       })}

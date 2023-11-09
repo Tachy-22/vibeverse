@@ -22,12 +22,12 @@ const MyGroups = () => {
           <div
             onClick={(e) => {
               setIsClicked(true);
-              setRoomName(e.target.innerText);
+              setRoomName(e.target.innerText.toLowerCase());
             }}
             className="capitalize bg-white/30 backdrop-blur-3xl p-1 rounded hover:bg-white hover:cursor-pointer "
             key={index}
           >
-            {room.name}
+            {room.name} 
           </div>
         );
       })}
